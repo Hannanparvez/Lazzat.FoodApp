@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Lazzat</string>
+    <string name="restaurant">Restaurants</string>
+    <string name="explore">Explore</string>
+    <string name="cart">Cart</string>
+    <string name="profile">Profile</string>
+    <string name="title_profile">Owner Profile</string>
+    <string name="title_Notification">Owner Notif</string>
+    <string name="title_home">home</string>
+    <string name="title_dashboard">Owner dashboard</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_signup">signup</string>
+    <string name="title_activity_owner_dashboard">Owner_dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+</resources>

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "186174550060",
+    "firebase_url": "https://lazzat-15c77.firebaseio.com",
+    "project_id": "lazzat-15c77",
+    "storage_bucket": "lazzat-15c77.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:186174550060:android:7d8e8c22216464c6",
+        "android_client_info": {
+          "package_name": "com.project.lazzatproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "186174550060-s9f2d183mnuj08hi486267u7p6j4c1b6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.project.lazzatproject",
+            "certificate_hash": "925a80ac6ac53f73f54b756d032cab388cc7ecbc"
+          }
+        },
+        {
+          "client_id": "186174550060-4e4vl3oi17f7fj3fn9fc160ss0d3fsj6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-V7JG8FUAI0a4JuS7UY4lrMcbKiQelWw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "186174550060-4e4vl3oi17f7fj3fn9fc160ss0d3fsj6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

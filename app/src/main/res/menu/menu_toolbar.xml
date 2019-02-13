@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/destination_settings"
+        android:icon="@drawable/ic_settings_white"
+        android:title="Settings"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/sign_out"
+        android:actionMenuTextColor="@color/colorPrimary"
+        android:title="Log Out"
+        android:icon="@drawable/ic_logout"
+        app:showAsAction="ifRoom"  />
+</menu>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/destination_home"
+        android:icon="@drawable/ic_home"
+        android:title="@string/restaurant" />
+    <item
+        android:id="@+id/destination_explore"
+        android:icon="@drawable/ic_camera"
+        android:title="@string/explore" />
+
+    <item
+        android:id="@+id/destination_cart"
+        android:icon="@drawable/ic_shopping_cart_black_24dp"
+        android:title="@string/cart" />
+
+    <item
+        android:id="@+id/destination_profile"
+        android:icon="@drawable/ic_person_black_24dp"
+        android:title="@string/profile" />
+</menu>
