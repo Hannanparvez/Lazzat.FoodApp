@@ -10,23 +10,30 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
         android:paddingLeft="5dp"
         android:paddingTop="10dp"
         android:paddingRight="5dp"
         android:text="Add Category"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
-    <ImageButton
-        android:id="@+id/fab_add"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_person_black_24dp"
+        app:elevation="4dp" />
 
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/ripple_oval"
-        android:elevation="8dp"
-        android:src="@drawable/ic_person_black_24dp" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginLeft="110dp"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/ic_person_black_24dp"
+        app:elevation="4dp" />
 
 
 </LinearLayout>
