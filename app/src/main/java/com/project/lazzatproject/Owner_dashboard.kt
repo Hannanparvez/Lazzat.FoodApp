@@ -8,11 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import android.widget.Toast
-
-
-
-
 
 
 //implement the interface OnNavigationItemSelectedListener in your activity class
@@ -22,6 +17,7 @@ class Owner_dashboard : AppCompatActivity(), BottomNavigationView.OnNavigationIt
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_owner)
+
         setSupportActionBar(findViewById(R.id.toolbar2))
 
         //loading the default fragment
