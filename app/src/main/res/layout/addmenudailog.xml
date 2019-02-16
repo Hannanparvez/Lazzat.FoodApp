@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select category to add products"
+        android:textSize="18sp" />
+
+    <Spinner
+        android:id="@+id/productcategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:id="@+id/productname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/productcategory"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:hint="product name"/>
+
+    <EditText
+        android:id="@+id/productprice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/productname"
+        android:ems="10"
+        android:hint="product price"
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/canceladd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/productprice"
+        android:layout_marginLeft="100dp"
+        android:text="@string/fui_cancel" />
+
+    <Button
+        android:id="@+id/addproduct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/productprice"
+        android:clickable="true"
+        android:text="add"
+        app:srcCompat="@drawable/fui_ic_check_circle_black_128dp" />
+
+</RelativeLayout>
