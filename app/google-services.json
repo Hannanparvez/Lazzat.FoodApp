@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "186174550060-ranmruekicu84sup7f11v0f8vg52g6ig.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.project.lazzatproject",
+            "certificate_hash": "ec1b55dad8dd8314c6f0228a27120fa8dfa507f2"
+          }
+        },
+        {
           "client_id": "186174550060-4e4vl3oi17f7fj3fn9fc160ss0d3fsj6.apps.googleusercontent.com",
           "client_type": 3
         }

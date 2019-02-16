@@ -62,6 +62,11 @@ class signup : Activity() {
                         myRef.child("Users").child(currentuser!!.uid).child("email").setValue(email)
                         myRef.child("Users").child(currentuser.uid).child("name").setValue(name)
                         myRef.child("Users").child(currentuser.uid).child("type").setValue(accounttype)
+                        if (accounttype=="owner"){
+                            myRef.child("Users").child(currentuser.uid).child("menu").setValue("true")
+
+
+                        }
                         // Sign in success, update UI with the signed-in user's information
                       Toast.makeText(applicationContext, "account created",
                                 Toast.LENGTH_LONG).show()

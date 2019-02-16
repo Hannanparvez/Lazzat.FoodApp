@@ -108,6 +108,7 @@ class signin : AppCompatActivity() {
 
             }
             if (stype == "owner") {
+
                 val intent = Intent(applicationContext, Owner_dashboard::class.java)
                 startActivity(intent)
                 return
