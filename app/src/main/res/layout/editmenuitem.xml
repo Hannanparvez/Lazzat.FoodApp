@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/RelativeLayout11"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" Edit Menu Item"
+        android:textAlignment="center"
+        android:textSize="18sp" />
+
+    <Spinner
+        android:id="@+id/productcategory1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView21"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:id="@+id/productname1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/productcategory1"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:hint="product name"/>
+
+    <EditText
+        android:id="@+id/productprice1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/productname1"
+        android:ems="10"
+        android:hint="product price"
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/canceladd1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/productprice1"
+        android:layout_marginLeft="100dp"
+        android:text="@string/fui_cancel" />
+
+    <Button
+        android:id="@+id/addproduct1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/productprice1"
+        android:clickable="true"
+        android:text="add"
+        app:srcCompat="@drawable/fui_ic_check_circle_black_128dp" />
+
+</RelativeLayout>

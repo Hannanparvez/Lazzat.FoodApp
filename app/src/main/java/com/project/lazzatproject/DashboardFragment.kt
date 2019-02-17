@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +17,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import java.util.ArrayList
+import android.app.AlertDialog
 
 
 class DashboardFragment : Fragment() {
@@ -42,7 +44,11 @@ class DashboardFragment : Fragment() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        val loading = AlertDialog.Builder(activity)
+        //View view = getLayoutInflater().inflate(R.layout.progress);
+        loading.setView(R.layout.showprogress)
+        val dialog = loading.create()
+        dialog.show()
 
         listCont = ArrayList()
 //        listCont.add(MenuItem("My Place", 100,"ih"))
@@ -54,6 +60,10 @@ class DashboardFragment : Fragment() {
         val menuref = myRef.child("Users").child(currentuser!!.uid).child("menu")
         menuref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+
+
+
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 for (snap in dataSnapshot.children) {
@@ -74,7 +84,7 @@ class DashboardFragment : Fragment() {
                     recyclerView.adapter = viewAdapter
                 }
 
-
+                dialog.dismiss()
 
 
                 // Sign in success, update UI with the signed-in user's information

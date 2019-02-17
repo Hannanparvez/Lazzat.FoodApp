@@ -30,6 +30,7 @@ class HomeFragment : Fragment(){
         //with the fragment you want to inflate
         //like if the class is HomeFragment it should have R.layout.home_fragment
         //if it is DashboardFragment it should have R.layout.fragment_dashboard
+
         mAuth = FirebaseAuth.getInstance()
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
@@ -71,6 +72,8 @@ class HomeFragment : Fragment(){
         }
         val addproducts = view.findViewById(R.id.addMenu) as FloatingActionButton
         addproducts.setOnClickListener {
+
+
             var productcategory=""
             val dialog = Dialog(context)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -89,12 +92,16 @@ class HomeFragment : Fragment(){
             var listofcategories = arrayListOf<String>("none")
             val menuref = myRef.child("Users").child(currentuser!!.uid).child("menu")
             menuref.addValueEventListener(object : ValueEventListener {
+
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+
                     // This method is called once with the initial value and again
                     // whenever data at this location is updated.
                     for (snap in dataSnapshot.children) {
                         listofcategories.add( snap.key.toString())
                     }
+
 
                     // Sign in success, update UI with the signed-in user's information
 
@@ -171,6 +178,42 @@ class HomeFragment : Fragment(){
 
         return view
 
+
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val loading = AlertDialog.Builder(activity)
+        //View view = getLayoutInflater().inflate(R.layout.progress);
+        loading.setView(R.layout.showprogress)
+        val loadingdialog = loading.create()
+        loadingdialog.show()
+        var listofcategories = arrayListOf<String>("none")
+        mAuth = FirebaseAuth.getInstance()
+
+        val currentuser = mAuth!!.currentUser
+
+        val menuref = myRef.child("Users").child(currentuser!!.uid).child("menu")
+        menuref.addValueEventListener(object : ValueEventListener {
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                for (snap in dataSnapshot.children) {
+                    listofcategories.add( snap.key.toString())
+                }
+
+             loadingdialog.dismiss()
+                // Sign in success, update UI with the signed-in user's information
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Failed to read value
+            }
+        })
 
     }
 }
