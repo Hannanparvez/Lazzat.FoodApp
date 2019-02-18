@@ -41,20 +41,20 @@
         android:inputType="textPersonName" />
 
     <Button
-        android:id="@+id/canceladd1"
+        android:id="@+id/removeitem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/productprice1"
         android:layout_marginLeft="100dp"
-        android:text="@string/fui_cancel" />
+        android:text="remove" />
 
     <Button
-        android:id="@+id/addproduct1"
+        android:id="@+id/edititem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/productprice1"
         android:clickable="true"
-        android:text="add"
+        android:text="edit"
         app:srcCompat="@drawable/fui_ic_check_circle_black_128dp" />
 
 </RelativeLayout>

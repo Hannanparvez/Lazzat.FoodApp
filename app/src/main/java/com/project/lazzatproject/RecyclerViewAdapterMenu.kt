@@ -55,8 +55,8 @@ class RecyclerViewAdapterMenu(private var context: Context, private var MenuItem
             productprice.setText(MenuItemList[position].price.toString())
 
 
-            val addproduct = dialog.findViewById(R.id.addproduct1) as Button
-            val canceladd = dialog.findViewById(R.id.canceladd1) as Button
+            val removeitem = dialog.findViewById(R.id.removeitem) as Button
+            val edititem = dialog.findViewById(R.id.edititem) as Button
 
             var listofcategories = arrayListOf<String>("none")
             val menuref = myRef.child("Users").child(currentuser!!.uid).child("menu")
@@ -103,10 +103,19 @@ class RecyclerViewAdapterMenu(private var context: Context, private var MenuItem
                 }
             }
             dialog.show()
-            canceladd.setOnClickListener{
+            removeitem.setOnClickListener{
+                menuref.child(productcategory).child(MenuItemList[position].name!!)
+                        .removeValue()
+                Toast.makeText(context,MenuItemList[position].name+" has been removed",Toast.LENGTH_SHORT).show()
+                MenuItemList.drop(position)
+                notifyItemRemoved(position)
+                notifyItemRangeChanged(position,MenuItemList.size)
+                val viewAdapter = RecyclerViewAdapterMenu(context!!,MenuItemList)
+                a= vie wAdapter
                 dialog.dismiss()
+
             }
-            addproduct.setOnClickListener{
+            edititem.setOnClickListener{
 
                 if (productcategory=="none"){
                     Toast.makeText(context,listofcategories.size.toString(),Toast.LENGTH_SHORT).show()
@@ -131,7 +140,7 @@ class RecyclerViewAdapterMenu(private var context: Context, private var MenuItem
 
                 }
                 else{
-                    menuref.child(productcategory).child(productname.text.toString())
+                    menuref.child(productcategory).child(MenuItemList[position].name!!)
                             .setValue(productprice.text.toString())
 
                     Toast.makeText(context,"Your product has been added",Toast.LENGTH_SHORT).show()
