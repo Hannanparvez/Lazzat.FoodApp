@@ -15,10 +15,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import android.widget.Spinner
-
-
-
-
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 
 
 class RecyclerViewAdapterMenu(private var context: Context, private var MenuItemList: List<MenuItem>) : RecyclerView.Adapter<RecyclerViewAdapterMenu.MyViewHolder>() {
@@ -78,6 +77,7 @@ class RecyclerViewAdapterMenu(private var context: Context, private var MenuItem
 
                 override fun onCancelled(error: DatabaseError) {
                     // Failed to read value
+
                 }
             })
 
@@ -110,9 +110,14 @@ class RecyclerViewAdapterMenu(private var context: Context, private var MenuItem
                 MenuItemList.drop(position)
                 notifyItemRemoved(position)
                 notifyItemRangeChanged(position,MenuItemList.size)
-                val viewAdapter = RecyclerViewAdapterMenu(context!!,MenuItemList)
-                a= vie wAdapter
+//
+                dialog.setOnDismissListener {
+                    Log.d("res","dis")
+
+                }
                 dialog.dismiss()
+
+
 
             }
             edititem.setOnClickListener{

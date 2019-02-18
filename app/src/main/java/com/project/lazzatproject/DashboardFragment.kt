@@ -18,6 +18,9 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import java.util.ArrayList
 import android.app.AlertDialog
+import android.app.Dialog
+import android.view.Window
+import androidx.fragment.app.FragmentActivity
 
 
 class DashboardFragment : Fragment() {
@@ -29,20 +32,45 @@ class DashboardFragment : Fragment() {
     private var mAuth: FirebaseAuth? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        Log.d("res", "oncreateview")
         //just change the fragment_dashboard
         //with the fragment you want to inflate
         //like if the class is HomeFragment it should have R.layout.home_fragment
         //if it is DashboardFragment it should have R.layout.fragment_dashboard
 
+
+
         v = inflater.inflate(R.layout.fragment_dashboard, container, false)
         recyclerView = v.findViewById<View>(R.id.recycler_view_menu) as RecyclerView
         val viewAdapter = RecyclerViewAdapterMenu(this.context!!,listCont)
-        recyclerView.layoutManager = LinearLayoutManager(this.activity)
+        recyclerView.layoutManager = LinearLayoutManager(this.activity) as RecyclerView.LayoutManager?
         recyclerView.adapter = viewAdapter
         return v
 
     }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("res", "onresume")
+        var dialog=Dialog(context)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.editmenuitem)
+        dialog.setCancelable(true)
+        dialog.setOnDismissListener{
+            Log.d("res", "dismiss")
+
+
+        }
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("res", "onPause")
+
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("res","on create")
         super.onCreate(savedInstanceState)
         val loading = AlertDialog.Builder(activity)
         //View view = getLayoutInflater().inflate(R.layout.progress);
@@ -100,4 +128,5 @@ class DashboardFragment : Fragment() {
 
 
     }
+
 }
