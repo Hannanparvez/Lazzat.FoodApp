@@ -52,11 +52,11 @@ class ProfileFragment : Fragment() {
 
 
         update()
-        val vi = inflater.inflate(R.layout.profilepic,container,false)
+        vi = inflater.inflate(R.layout.profilepic,container,false)
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
         vie=view
         val ownerdp = view.findViewById(R.id.owner_profile_pic) as ImageView
-        dop=vi.findViewById(R.id.dp) as ImageView
+        dop=vi!!.findViewById(R.id.dp) as ImageView
         ownerdp.setOnClickListener {
 
             val dialog = Dialog(context)
