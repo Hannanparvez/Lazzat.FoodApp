@@ -9,6 +9,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import kotlinx.android.synthetic.main.activity_main.*
 import android.content.Intent
+import android.util.Log
 import com.google.android.gms.tasks.Task
 import androidx.annotation.NonNull
 import com.google.android.gms.tasks.OnCompleteListener
@@ -61,6 +62,7 @@ class MainActivity : AppCompatActivity() {
         val navigated = NavigationUI.onNavDestinationSelected(item!!, navController)
 
         if (item.itemId == R.id.sign_out) {
+
             AuthUI.getInstance()
                     .signOut(this)
                     .addOnCompleteListener {

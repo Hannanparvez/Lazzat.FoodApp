@@ -1,13 +1,11 @@
 package com.project.lazzatproject
 
+import android.app.AlertDialog
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.DialogFragment
+import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,11 +14,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import java.util.ArrayList
-import android.app.AlertDialog
-import android.app.Dialog
-import android.view.Window
-import androidx.fragment.app.FragmentActivity
+import java.util.*
 
 
 class DashboardFragment : Fragment() {
@@ -32,6 +26,7 @@ class DashboardFragment : Fragment() {
     private var mAuth: FirebaseAuth? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+
         Log.d("res", "oncreateview")
         //just change the fragment_dashboard
         //with the fragment you want to inflate
@@ -42,34 +37,36 @@ class DashboardFragment : Fragment() {
 
         v = inflater.inflate(R.layout.fragment_dashboard, container, false)
         recyclerView = v.findViewById<View>(R.id.recycler_view_menu) as RecyclerView
-        val viewAdapter = RecyclerViewAdapterMenu(this.context!!,listCont)
+        val viewAdapter = RecyclerViewAdapterMenu(this.context!!,listCont,context!!)
         recyclerView.layoutManager = LinearLayoutManager(this.activity) as RecyclerView.LayoutManager?
         recyclerView.adapter = viewAdapter
+
         return v
 
     }
 
-    override fun onStart() {
-        super.onStart()
-        Log.d("res", "onresume")
-        var dialog=Dialog(context)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.editmenuitem)
-        dialog.setCancelable(true)
-        dialog.setOnDismissListener{
-            Log.d("res", "dismiss")
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.ownertop,menu)
+        super.onCreateOptionsMenu(menu, inflater)
+        var refresh=menu.findItem(R.id.refresh)
+        refresh.setVisible(true)
+        var signout=menu.findItem(R.id.sign_out1)
+        signout.setVisible(false)
+    }
 
+    override fun onResume() {
+        super.onResume()
+        (activity as AppCompatActivity).supportActionBar!!.addOnMenuVisibilityListener {
 
         }
-
     }
 
-    override fun onPause() {
-        super.onPause()
-        Log.d("res", "onPause")
 
-    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        setHasOptionsMenu(true)
+
         Log.d("res","on create")
         super.onCreate(savedInstanceState)
         val loading = AlertDialog.Builder(activity)
@@ -108,7 +105,7 @@ class DashboardFragment : Fragment() {
                 Log.d(TAG, listCont.size.toString())
                 if (isVisible){
 
-                    val viewAdapter = RecyclerViewAdapterMenu(context!!,listCont)
+                    val viewAdapter = RecyclerViewAdapterMenu(context!!,listCont,context!!)
                     recyclerView.adapter = viewAdapter
                 }
 

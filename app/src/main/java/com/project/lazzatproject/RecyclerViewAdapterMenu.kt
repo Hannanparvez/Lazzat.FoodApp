@@ -8,19 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import android.widget.Spinner
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
 
 
-class RecyclerViewAdapterMenu(private var context: Context, private var MenuItemList: List<MenuItem>) : RecyclerView.Adapter<RecyclerViewAdapterMenu.MyViewHolder>() {
+class RecyclerViewAdapterMenu(private var context: Context, private var MenuItemList: List<MenuItem>,private var con: Context) : RecyclerView.Adapter<RecyclerViewAdapterMenu.MyViewHolder>() {
     private var database = FirebaseDatabase.getInstance()
     private var myRef = database.reference
 
@@ -106,19 +105,11 @@ class RecyclerViewAdapterMenu(private var context: Context, private var MenuItem
             removeitem.setOnClickListener{
                 menuref.child(productcategory).child(MenuItemList[position].name!!)
                         .removeValue()
-                Toast.makeText(context,MenuItemList[position].name+" has been removed",Toast.LENGTH_SHORT).show()
-                MenuItemList.drop(position)
-                notifyItemRemoved(position)
-                notifyItemRangeChanged(position,MenuItemList.size)
-//
-                dialog.setOnDismissListener {
-                    Log.d("res","dis")
-
-                }
                 dialog.dismiss()
-
-
-
+                var ft: FragmentTransaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+                ft.replace(R.id.fragment_container, DashboardFragment() as Fragment);
+                ft.commit()
+                Toast.makeText(context,MenuItemList[position].name+" has been removed",Toast.LENGTH_SHORT).show()
             }
             edititem.setOnClickListener{
 
@@ -149,6 +140,9 @@ class RecyclerViewAdapterMenu(private var context: Context, private var MenuItem
                             .setValue(productprice.text.toString())
 
                     Toast.makeText(context,"Your product has been added",Toast.LENGTH_SHORT).show()
+                    var ft: FragmentTransaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+                    ft.replace(R.id.fragment_container, DashboardFragment() as Fragment);
+                    ft.commit()
 
                     dialog.dismiss()
 

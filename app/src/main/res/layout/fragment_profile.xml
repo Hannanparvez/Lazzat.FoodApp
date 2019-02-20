@@ -15,8 +15,8 @@
             android:scaleType="centerCrop"
             android:src="@drawable/back" />
 
-        <ImageButton
-            android:id="@+id/user_profile_photo"
+        <ImageView
+            android:id="@+id/owner_profile_pic"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_below="@+id/header_cover_image"
@@ -38,14 +38,14 @@
             android:paddingBottom="24dp">
 
             <TextView
-                android:id="@+id/user_profile_name"
+                android:id="@+id/owner_profile_name1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="76dp"
                 android:textColor="#fff"
                 android:textSize="24sp"
-                android:textStyle="bold" />
+                />
 
         </RelativeLayout>
 
