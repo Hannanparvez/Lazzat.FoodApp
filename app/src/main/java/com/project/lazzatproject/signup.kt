@@ -61,6 +61,7 @@ class signup : Activity() {
                         val currentuser = mAuth!!.currentUser
                         myRef.child("Users").child(currentuser!!.uid).child("email").setValue(email)
                         myRef.child("Users").child(currentuser.uid).child("name").setValue(name)
+                        myRef.child("Users").child(currentuser.uid).child("profile_pic").setValue("true")
                         myRef.child("Users").child(currentuser.uid).child("type").setValue(accounttype)
                         if (accounttype=="owner"){
                             myRef.child("Users").child(currentuser.uid).child("menu").setValue("true")
@@ -70,7 +71,6 @@ class signup : Activity() {
                         // Sign in success, update UI with the signed-in user's information
                       Toast.makeText(applicationContext, "account created",
                                 Toast.LENGTH_LONG).show()
-//                        val user = mAuth.getCurrentUser()
                         updateUI()
 
                     } else {
@@ -88,7 +88,7 @@ class signup : Activity() {
         val intent=Intent(this,signin::class.java)
         startActivity(intent)
     }
-    fun updateUI(){
+    private fun updateUI(){
         val currentuser=mAuth!!.currentUser
 
 
