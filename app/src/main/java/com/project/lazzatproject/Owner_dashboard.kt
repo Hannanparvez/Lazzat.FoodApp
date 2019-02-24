@@ -1,6 +1,8 @@
 package com.project.lazzatproject
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -15,9 +17,12 @@ import com.project.lazzatproject.R.id.*
 
 //implement the interface OnNavigationItemSelectedListener in your activity class
 class Owner_dashboard : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
+    var sharedpref: SharedPreferences?=null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        sharedpref=this.getSharedPreferences("actype", Context.MODE_PRIVATE)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_owner)
 
@@ -47,7 +52,9 @@ class Owner_dashboard : AppCompatActivity(), BottomNavigationView.OnNavigationIt
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             sign_out1 ->{
-                Log.d("ref","hha")
+                var save = sharedpref!!.edit()
+                save.putString("type", "")
+                save.apply()
                 AuthUI.getInstance()
                         .signOut(this)
                         .addOnCompleteListener {

@@ -1,8 +1,11 @@
 package com.project.lazzatproject
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.google.android.gms.tasks.OnCompleteListener
@@ -20,9 +23,14 @@ class signup : Activity() {
     private var myRef = database.reference
     private var mAuth: FirebaseAuth? = null
     private lateinit var accounttype:String
+    var sharedpref: SharedPreferences?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        mAuth=FirebaseAuth.getInstance()
         super.onCreate(savedInstanceState)
+
+        sharedpref=this.getSharedPreferences("actype", Context.MODE_PRIVATE)
+        mAuth=FirebaseAuth.getInstance()
+
         setContentView(R.layout.activity_signup)
     }
     override fun onStart() {
@@ -69,8 +77,12 @@ class signup : Activity() {
 
                         }
                         // Sign in success, update UI with the signed-in user's information
+                        var save = sharedpref!!.edit()
+                        save.putString("type", accounttype)
+                        save.apply()
                       Toast.makeText(applicationContext, "account created",
                                 Toast.LENGTH_LONG).show()
+
                         updateUI()
 
                     } else {
@@ -85,38 +97,37 @@ class signup : Activity() {
                 })
     }
     fun gotosignin(view: View){
+
         val intent=Intent(this,signin::class.java)
         startActivity(intent)
+        finish()
     }
     private fun updateUI(){
+        Log.d("hoi","hios")
         val currentuser=mAuth!!.currentUser
 
 
         if (currentuser!=null){
-            val mref=myRef.child("Users").child(currentuser.uid)
-            mref.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    // This method is called once with the initial value and again
-                    // whenever data at this location is updated.
-                    val typ = dataSnapshot.child("type").value as String
+            var stype = sharedpref!!.getString("type", "")
+            if (stype == "customer") {
+                val intent = Intent(applicationContext, MainActivity::class.java)
 
-                    if (typ=="customer"){
-                        val intent = Intent(applicationContext, MainActivity::class.java)
-                        startActivity(intent)
+                startActivity(intent)
+                finish()
+                return
 
-                    }
-                    if (typ=="owner"){
-                        val intent = Intent(applicationContext, Owner_dashboard::class.java)
-                        startActivity(intent)
+            }
+            if (stype == "owner") {
+
+                val intent = Intent(applicationContext, Owner_dashboard::class.java)
+                startActivity(intent)
+                finish()
+                return
 
 
-                    }
-                }
+            }
 
-                override fun onCancelled(error: DatabaseError) {
-                    // Failed to read value
-                }
-            })
+
         }
 
     }

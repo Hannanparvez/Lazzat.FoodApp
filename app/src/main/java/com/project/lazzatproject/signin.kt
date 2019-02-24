@@ -3,7 +3,9 @@ package com.project.lazzatproject
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.AsyncTask
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -30,8 +32,9 @@ class signin : AppCompatActivity() {
     }
 
     override fun onStart() {
-        updateUI()
+
         super.onStart()
+        updateUI()
 
     }
 
@@ -39,37 +42,38 @@ class signin : AppCompatActivity() {
 
     fun bulogin(view:View){
         logintofirebase(email.text.toString(),password.text.toString())
+//
 
 
 
     }
+
 
     fun logintofirebase(email:String,password:String){
         mAuth!!.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         val currentuser=mAuth!!.currentUser
-
+                        Log.d("h","task")
                         val mref=myRef.child("Users").child(currentuser!!.uid)
-                        mref.addValueEventListener(object : ValueEventListener {
+                        mref.addListenerForSingleValueEvent(object : ValueEventListener {
                             override fun onDataChange(dataSnapshot: DataSnapshot) {
                                 // This method is called once with the initial value and again
                                 // whenever data at this location is updated.
+                                Log.d("hi","han")
                                 val typ = dataSnapshot.child("type").value as String
                                 var save = sharedpref!!.edit()
                                 save.putString("type", typ)
                                 save.apply()
-                                // Sign in success, update UI with the signed-in user's information
-                                Toast.makeText(applicationContext, "successful login ", Toast.LENGTH_LONG).show()
-
-
-
                                 updateUI()
+
                             }
                             override fun onCancelled(error: DatabaseError) {
                                 // Failed to read value
                             }
                         })
+
+
                         }
 
                     else {
@@ -84,14 +88,17 @@ class signin : AppCompatActivity() {
 //
 
                 }
+
     }
 
     fun updateUI(){
+        Log.d("h","update")
 
         val currentuser=mAuth!!.currentUser
 //
 //
         if (currentuser!=null) {
+
 
             // This method is called once with the initial value and again
             // whenever data at this location is updated.
@@ -104,6 +111,7 @@ class signin : AppCompatActivity() {
                 val intent = Intent(applicationContext, MainActivity::class.java)
 
                 startActivity(intent)
+                finish()
                 return
 
             }
@@ -111,6 +119,7 @@ class signin : AppCompatActivity() {
 
                 val intent = Intent(applicationContext, Owner_dashboard::class.java)
                 startActivity(intent)
+                finish()
                 return
 
 
@@ -129,3 +138,4 @@ class signin : AppCompatActivity() {
 
 
 }
+

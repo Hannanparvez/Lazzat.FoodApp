@@ -1,5 +1,6 @@
 package com.project.lazzatproject
 
+import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -9,6 +10,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import kotlinx.android.synthetic.main.activity_main.*
 import android.content.Intent
+import android.content.SharedPreferences
 import android.util.Log
 import com.google.android.gms.tasks.Task
 import androidx.annotation.NonNull
@@ -18,9 +20,11 @@ import android.view.View
 
 
 class MainActivity : AppCompatActivity() {
+    var sharedpref: SharedPreferences?=null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        sharedpref=this.getSharedPreferences("actype", Context.MODE_PRIVATE)
 
 
         super.onCreate(savedInstanceState)
@@ -62,6 +66,9 @@ class MainActivity : AppCompatActivity() {
         val navigated = NavigationUI.onNavDestinationSelected(item!!, navController)
 
         if (item.itemId == R.id.sign_out) {
+            var save = sharedpref!!.edit()
+            save.putString("type", "")
+            save.apply()
 
             AuthUI.getInstance()
                     .signOut(this)
