@@ -3,7 +3,11 @@ package com.project.lazzatproject
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
+import android.content.Intent
+import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
 import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +16,12 @@ import android.view.Window
 import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.fragment.app.Fragment
+import com.firebase.ui.auth.AuthUI.getApplicationContext
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.places.Places
+import com.google.android.gms.location.places.ui.PlacePicker
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -20,7 +30,23 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
 
-class HomeFragment : Fragment(){
+class HomeFragment : Fragment(),GoogleApiClient.ConnectionCallbacks,
+GoogleApiClient.OnConnectionFailedListener{
+    override fun onConnectionSuspended(p0: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onConnectionFailed(p0: ConnectionResult) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onConnected(p0: Bundle?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+
+    private val PLACE_PICKER_REQUEST = 1
+    private var mGoogleApiClient: GoogleApiClient? = null
 
     private var database = FirebaseDatabase.getInstance()
     private var myRef = database.reference
@@ -176,9 +202,39 @@ class HomeFragment : Fragment(){
 
         }
 
+        mGoogleApiClient = GoogleApiClient.Builder(context!!)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build()
+
+//        //OnClickListener
+//        val pick = viq.findViewById(R.id.btPlacePicker) as Button
+
+
         return view
 
 
+    }
+    private fun checkGPSEnabled(): Boolean {
+        if (!isLocationEnabled())
+            showAlert()
+        return isLocationEnabled()
+    }
+    private fun isLocationEnabled(): Boolean {
+        var locationManager = context!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager!!.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+    }
+    private fun showAlert() {
+        val dialog = AlertDialog.Builder(context)
+        dialog.setTitle("Enable Location")
+                .setMessage("Locations Settings is set to 'Off'.\nEnable Location to use this app")
+                .setPositiveButton("Location Settings") { paramDialogInterface, paramInt ->
+                    val myIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                    startActivity(myIntent)
+                }
+                .setNegativeButton("Cancel") { paramDialogInterface, paramInt -> }
+        dialog.show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -188,24 +244,31 @@ class HomeFragment : Fragment(){
         loading.setView(R.layout.showprogress)
         val loadingdialog = loading.create()
         loadingdialog.show()
-        var listofcategories = arrayListOf<String>("none")
         mAuth = FirebaseAuth.getInstance()
 
         val currentuser = mAuth!!.currentUser
+        var location=""
 
-        val menuref = myRef.child("Users").child(currentuser!!.uid).child("menu")
-        menuref.addValueEventListener(object : ValueEventListener {
+        val menuref = myRef.child("Users").child(currentuser!!.uid).child("location")
+        menuref.addListenerForSingleValueEvent(object : ValueEventListener {
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-
+                 location=dataSnapshot.value as String
+                loadingdialog.dismiss()
+                if(location=="none"){
+                    if (checkGPSEnabled()) {
+                        val builder = PlacePicker.IntentBuilder()
+                        startActivityForResult(builder.build(activity), PLACE_PICKER_REQUEST)
+                    }
+                }
 
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                for (snap in dataSnapshot.children) {
-                    listofcategories.add( snap.key.toString())
-                }
+//                for (snap in dataSnapshot.children) {
+//                    listofcategories.add( snap.key.toString())
+//                }
 
-             loadingdialog.dismiss()
+
                 // Sign in success, update UI with the signed-in user's information
 
             }
@@ -214,6 +277,8 @@ class HomeFragment : Fragment(){
                 // Failed to read value
             }
         })
+
+
 
     }
 }
