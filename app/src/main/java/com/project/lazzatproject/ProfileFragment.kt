@@ -214,7 +214,7 @@ class ProfileFragment : Fragment() {
                     val username = dataSnapshot.child("name").value as String
                     val dp = dataSnapshot.child("profile_pic").value as String
 
-                    if (dp == "true") {
+                    if (dp == "none") {
 
                         vie!!.findViewById<ImageView>(R.id.owner_profile_pic).setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_camera));
 //                        Picasso.get().load(R.drawable.backprofile).into(vie!!.findViewById<ImageView>(R.id.owner_profile_pic));

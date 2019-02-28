@@ -73,6 +73,7 @@ class signup : Activity() {
                         myRef.child("Users").child(currentuser.uid).child("type").setValue(accounttype)
                         if (accounttype=="owner"){
                             myRef.child("Users").child(currentuser.uid).child("menu").setValue("true")
+                            myRef.child("Users").child(currentuser.uid).child("location").setValue("none")
 
 
                         }

@@ -82,7 +82,8 @@ class UserProfileFragment : Fragment() {
                         val username = dataSnapshot.child("name").value as String
                         val dp = dataSnapshot.child("profile_pic").value as String
 
-                        if (dp == "true") {
+                        if (dp == "none") {
+                            Log.d("hanna","hanan")
                             choosedp!!.findViewById<ImageView>(R.id.dp1).setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_camera));
                         } else {
                             Picasso.get().load(dp).config(Bitmap.Config.RGB_565)
@@ -216,7 +217,7 @@ class UserProfileFragment : Fragment() {
                     val dp = dataSnapshot.child("profile_pic").value as String
                     Log.d("pic",dp)
 
-                    if (dp == "true") {
+                    if (dp == "none") {
                         vie!!.findViewById<ImageView>(R.id.user_profile_photo).setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_camera));
                     } else {
                         Picasso.get().load(dp).config(Bitmap.Config.RGB_565)
