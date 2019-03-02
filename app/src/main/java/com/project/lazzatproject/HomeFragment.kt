@@ -1,14 +1,17 @@
 package com.project.lazzatproject
 
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.location.Address
 import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
 import android.text.InputType
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,12 +25,14 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.places.Places
 import com.google.android.gms.location.places.ui.PlacePicker
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.schibstedspain.leku.*
 
 
 class HomeFragment : Fragment(),GoogleApiClient.ConnectionCallbacks,
@@ -43,10 +48,6 @@ GoogleApiClient.OnConnectionFailedListener{
     override fun onConnected(p0: Bundle?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
-
-    private val PLACE_PICKER_REQUEST = 1
-    private var mGoogleApiClient: GoogleApiClient? = null
 
     private var database = FirebaseDatabase.getInstance()
     private var myRef = database.reference
@@ -202,11 +203,6 @@ GoogleApiClient.OnConnectionFailedListener{
 
         }
 
-        mGoogleApiClient = GoogleApiClient.Builder(context!!)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build()
 
 //        //OnClickListener
 //        val pick = viq.findViewById(R.id.btPlacePicker) as Button
@@ -215,26 +211,6 @@ GoogleApiClient.OnConnectionFailedListener{
         return view
 
 
-    }
-    private fun checkGPSEnabled(): Boolean {
-        if (!isLocationEnabled())
-            showAlert()
-        return isLocationEnabled()
-    }
-    private fun isLocationEnabled(): Boolean {
-        var locationManager = context!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        return locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager!!.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-    }
-    private fun showAlert() {
-        val dialog = AlertDialog.Builder(context)
-        dialog.setTitle("Enable Location")
-                .setMessage("Locations Settings is set to 'Off'.\nEnable Location to use this app")
-                .setPositiveButton("Location Settings") { paramDialogInterface, paramInt ->
-                    val myIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                    startActivity(myIntent)
-                }
-                .setNegativeButton("Cancel") { paramDialogInterface, paramInt -> }
-        dialog.show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -256,10 +232,25 @@ GoogleApiClient.OnConnectionFailedListener{
                  location=dataSnapshot.value as String
                 loadingdialog.dismiss()
                 if(location=="none"){
-                    if (checkGPSEnabled()) {
-                        val builder = PlacePicker.IntentBuilder()
-                        startActivityForResult(builder.build(activity), PLACE_PICKER_REQUEST)
-                    }
+//                        val builder = PlacePicker.IntentBuilder()
+//                        startActivityForResult(builder.build(activity), PLACE_PICKER_REQUEST)
+                        val locationPickerIntent = LocationPickerActivity.Builder()
+                                .withLocation(34.083656, 74.797371)
+                                .withGeolocApiKey("AIzaSyCkfzdwM9uVw_AqA139EyRSkwNzFKpWjt0")
+                                .withSearchZone("en_In")
+
+//                                .shouldReturnOkOnBackPressed()
+//                                .withStreetHidden()
+//                                .withCityHidden()
+//                                .withZipCodeHidden()
+                                .withSatelliteViewHidden()
+                                .withGooglePlacesEnabled()
+                                .withGoogleTimeZoneEnabled()
+                                .withVoiceSearchHidden()
+                                .build(context!!)
+
+                        startActivityForResult(locationPickerIntent,123)
+
                 }
 
                 // This method is called once with the initial value and again
@@ -280,5 +271,42 @@ GoogleApiClient.OnConnectionFailedListener{
 
 
 
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK && data != null) {
+            Log.d("RESULT****", "OK")
+            if (requestCode == 1) {
+                val latitude = data.getDoubleExtra(LATITUDE, 0.0)
+                Log.d("LATITUDE****", latitude.toString())
+                val longitude = data.getDoubleExtra(LONGITUDE, 0.0)
+                Log.d("LONGITUDE****", longitude.toString())
+                val address = data.getStringExtra(LOCATION_ADDRESS)
+                Log.d("ADDRESS****", address.toString())
+                val postalcode = data.getStringExtra(ZIPCODE)
+                Log.d("POSTALCODE****", postalcode.toString())
+                val bundle = data.getBundleExtra(TRANSITION_BUNDLE)
+                Log.d("BUNDLE TEXT****", bundle.getString("test"))
+                val fullAddress = data.getParcelableExtra<Address>(ADDRESS)
+                if (fullAddress != null) {
+                    Log.d("FULL ADDRESS****", fullAddress.toString())
+                }
+                val timeZoneId = data.getStringExtra(TIME_ZONE_ID)
+                Log.d("TIME ZONE ID****", timeZoneId)
+                val timeZoneDisplayName = data.getStringExtra(TIME_ZONE_DISPLAY_NAME)
+                Log.d("TIME ZONE NAME****", timeZoneDisplayName)
+            } else if (requestCode == 2) {
+                val latitude = data.getDoubleExtra(LATITUDE, 0.0)
+                Log.d("LATITUDE****", latitude.toString())
+                val longitude = data.getDoubleExtra(LONGITUDE, 0.0)
+                Log.d("LONGITUDE****", longitude.toString())
+                val address = data.getStringExtra(LOCATION_ADDRESS)
+                Log.d("ADDRESS****", address.toString())
+                val lekuPoi = data.getParcelableExtra<LekuPoi>(LEKU_POI)
+                Log.d("LekuPoi****", lekuPoi.toString())
+            }
+        }
+        if (resultCode == Activity.RESULT_CANCELED) {
+            Log.d("RESULT****", "CANCELLED")
+        }
     }
 }
