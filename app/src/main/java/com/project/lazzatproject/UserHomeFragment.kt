@@ -1,6 +1,7 @@
 package com.project.lazzatproject
 
 
+import android.app.AlertDialog
 import android.content.ContentValues
 import android.os.Bundle
 import android.util.Log
@@ -54,6 +55,12 @@ class UserHomeFragment : Fragment() {
 
     }
     private fun loadPost(){
+        val loading = AlertDialog.Builder(activity)
+        //View view = getLayoutInflater().inflate(R.layout.progress);
+        loading.setView(R.layout.fetchingrestaurents)
+        val loadingdialog = loading.create()
+        loadingdialog.show()
+
 
         myRef.child("Users").addValueEventListener(object : ValueEventListener {
 
@@ -78,6 +85,7 @@ class UserHomeFragment : Fragment() {
 
                     val viewAdapter = RecycleViewAdapter(context!!,listCont)
                     recyclerView.adapter = viewAdapter
+                    loadingdialog.dismiss()
                 }
             }
 
