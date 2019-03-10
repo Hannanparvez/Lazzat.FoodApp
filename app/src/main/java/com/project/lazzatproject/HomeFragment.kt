@@ -4,12 +4,9 @@ package com.project.lazzatproject
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import android.location.Address
-import android.location.LocationManager
 import android.os.Bundle
-import android.provider.Settings
 import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,13 +16,8 @@ import android.view.Window
 import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.fragment.app.Fragment
-import com.firebase.ui.auth.AuthUI.getApplicationContext
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.places.Places
-import com.google.android.gms.location.places.ui.PlacePicker
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot

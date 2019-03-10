@@ -3,20 +3,18 @@ package com.project.lazzatproject
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
 import android.app.Dialog
-//import android.app.Fragment
 import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.InputType
 import android.util.Log
 import android.view.*
+import androidx.fragment.app.Fragment
 import android.widget.*
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
@@ -35,7 +33,7 @@ import java.io.IOException
 import java.util.*
 
 
-class ProfileFragment : androidx.fragment.app.Fragment() {
+class ProfileFragment : Fragment() {
     private var filePath: Uri? = null
     var e_shop_name:TextView?=null
     var e_shop_description:TextView?=null
