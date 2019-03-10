@@ -3,6 +3,7 @@ package com.project.lazzatproject
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
 import android.app.Dialog
+//import android.app.Fragment
 import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Bitmap
@@ -10,15 +11,10 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.InputType
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.view.*
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
@@ -29,14 +25,20 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.schibstedspain.leku.LATITUDE
+import com.schibstedspain.leku.LOCATION_ADDRESS
+import com.schibstedspain.leku.LONGITUDE
+import com.schibstedspain.leku.LocationPickerActivity
 import com.squareup.picasso.Picasso
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.util.*
 
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : androidx.fragment.app.Fragment() {
     private var filePath: Uri? = null
+    var e_shop_name:TextView?=null
+    var e_shop_description:TextView?=null
     private val PICK_IMAGE_REQUEST = 71
     private var choosedp: Dialog? = null
     private var database = FirebaseDatabase.getInstance()
@@ -61,6 +63,102 @@ class ProfileFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
         vie = view
         val ownerdp = view.findViewById(R.id.owner_profile_pic) as ImageView
+        val editshopname=view.findViewById(R.id.editshopname) as ImageButton
+        val editshopdescription=view.findViewById(R.id.editshopdescription) as ImageButton
+        val editshopaddress=view.findViewById(R.id.editshopaddress) as ImageButton
+        editshopname.setOnClickListener {
+            val alert=AlertDialog.Builder(context)
+            var nam: EditText? = null
+            with(alert) {
+                setTitle("Change Shop Name ")
+// Add any  input field here
+                nam = EditText(context)
+                nam!!.setText(e_shop_name!!.text)
+                nam!!.inputType = InputType.TYPE_CLASS_TEXT
+                setNeutralButton("OK") { dialog, whichButton ->
+
+                    dialog.dismiss()
+
+                }
+                setNegativeButton("NO") { dialog, whichButton ->
+
+                    //showMessage("Close the game or anything!")
+                    dialog.dismiss()
+                }
+            }
+            val dialog = alert.create()
+            var container: FrameLayout  =FrameLayout(context);
+            var params:FrameLayout.LayoutParams  = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.leftMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin);
+            params.rightMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin)
+            nam!!.layoutParams = params;
+
+            container.addView(nam);
+            dialog.setView(container)
+            dialog.show()
+
+
+
+
+
+        }
+        editshopdescription.setOnClickListener {
+            val alert=AlertDialog.Builder(context)
+            var des:EditText? = EditText(context)
+            with(alert) {
+                setTitle("Change Shop Description ")
+// Add any  input field here
+                des = EditText(context)
+                des!!.setText(e_shop_description!!.text)
+                des!!.inputType = InputType.TYPE_CLASS_TEXT
+                setNeutralButton("OK") { dialog, whichButton ->
+
+                    dialog.dismiss()
+
+                }
+                setNegativeButton("NO") { dialog, whichButton ->
+
+                    //showMessage("Close the game or anything!")
+                    dialog.dismiss()
+                }
+            }
+            val dialog = alert.create()
+            var container: FrameLayout  =FrameLayout(context);
+            var params:FrameLayout.LayoutParams  = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.leftMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin);
+            params.rightMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin)
+            des!!.layoutParams = params;
+            des!!.setSingleLine(false)
+            des!!.setLines(4)
+            container.addView(des);
+
+            des!!.maxLines = 5
+            des!!.gravity = Gravity.LEFT
+            des!!.isHorizontalScrollBarEnabled = false
+            dialog.setView(container)
+            dialog.show()
+
+
+        }
+        editshopaddress.setOnClickListener {
+            val locationPickerIntent = LocationPickerActivity.Builder()
+                    .withLocation(34.083656, 74.797371)
+                    .withGeolocApiKey("AIzaSyCkfzdwM9uVw_AqA139EyRSkwNzFKpWjt0")
+                    .withSearchZone("en_In")
+
+//                                .shouldReturnOkOnBackPressed()
+//                                .withStreetHidden()
+//                                .withCityHidden()
+//                                .withZipCodeHidden()
+                    .withSatelliteViewHidden()
+                    .withGooglePlacesEnabled()
+                    .withGoogleTimeZoneEnabled()
+                    .withVoiceSearchHidden()
+                    .build(context!!)
+
+            startActivityForResult(locationPickerIntent,123)
+        }
+
 
 
         ownerdp.setOnClickListener {
@@ -197,6 +295,17 @@ class ProfileFragment : Fragment() {
             }
 
         }
+        else if (requestCode == 123 && data != null && data.data != null) {
+
+            val latitude = data!!.getDoubleExtra(LATITUDE, 0.0)
+            Log.d("LATITUDE****", latitude.toString())
+            val longitude = data!!.getDoubleExtra(LONGITUDE, 0.0)
+            Log.d("LONGITUDE****", longitude.toString())
+            val address = data!!.getStringExtra(LOCATION_ADDRESS)
+            Log.d("ADDRESS****", address.toString())
+//                val lekuPoi = data.getParcelableExtra<LekuPoi>(LEKU_POI)
+//                Log.d("LekuPoi****", lekuPoi.toString())
+        }
     }
 
     private fun update() {
@@ -225,6 +334,14 @@ class ProfileFragment : Fragment() {
                     Log.d("pic", dp)
                     var usernametext = vie!!.findViewById<TextView>(R.id.owner_profile_name1)
                     usernametext.text = username
+                    var shop_name=vie!!.findViewById<TextView>(R.id.shopname)
+                    var shop_description=vie!!.findViewById<TextView>(R.id.shopdescription)
+                    var shop_address=vie!!.findViewById<TextView>(R.id.shopaddress)
+                    e_shop_description=shop_description
+                    e_shop_name=shop_name
+                    shop_name.setText(dataSnapshot.child("shop_name").value as String)
+                    shop_description.setText(dataSnapshot.child("shop_description").value as String)
+                    shop_address.text=dataSnapshot.child("location").child("address").value as String
                     loadingprogress!!.dismiss()
                 }
 

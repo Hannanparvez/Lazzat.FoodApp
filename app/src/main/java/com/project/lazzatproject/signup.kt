@@ -69,11 +69,15 @@ class signup : Activity() {
                         val currentuser = mAuth!!.currentUser
                         myRef.child("Users").child(currentuser!!.uid).child("email").setValue(email)
                         myRef.child("Users").child(currentuser.uid).child("name").setValue(name)
-                        myRef.child("Users").child(currentuser.uid).child("profile_pic").setValue("true")
+                        myRef.child("Users").child(currentuser.uid).child("profile_pic").setValue("none")
                         myRef.child("Users").child(currentuser.uid).child("type").setValue(accounttype)
                         if (accounttype=="owner"){
-                            myRef.child("Users").child(currentuser.uid).child("menu").setValue("true")
+                            myRef.child("Users").child(currentuser.uid).child("menu").setValue("none")
                             myRef.child("Users").child(currentuser.uid).child("location").setValue("none")
+                            myRef.child("Users").child(currentuser.uid).child("shop_name").setValue("none")
+                            myRef.child("Users").child(currentuser.uid).child("shop_description").setValue("none")
+
+
 
 
                         }

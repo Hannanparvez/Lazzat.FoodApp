@@ -229,9 +229,9 @@ GoogleApiClient.OnConnectionFailedListener{
         menuref.addListenerForSingleValueEvent(object : ValueEventListener {
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                 location=dataSnapshot.value as String
+//                 location=dataSnapshot.
                 loadingdialog.dismiss()
-                if(location=="none"){
+                if(!dataSnapshot.hasChildren()){
 //                        val builder = PlacePicker.IntentBuilder()
 //                        startActivityForResult(builder.build(activity), PLACE_PICKER_REQUEST)
                         val locationPickerIntent = LocationPickerActivity.Builder()
@@ -294,15 +294,15 @@ GoogleApiClient.OnConnectionFailedListener{
                 Log.d("TIME ZONE ID****", timeZoneId)
                 val timeZoneDisplayName = data.getStringExtra(TIME_ZONE_DISPLAY_NAME)
                 Log.d("TIME ZONE NAME****", timeZoneDisplayName)
-            } else if (requestCode == 2) {
+            } else if (requestCode == 123) {
                 val latitude = data.getDoubleExtra(LATITUDE, 0.0)
                 Log.d("LATITUDE****", latitude.toString())
                 val longitude = data.getDoubleExtra(LONGITUDE, 0.0)
                 Log.d("LONGITUDE****", longitude.toString())
                 val address = data.getStringExtra(LOCATION_ADDRESS)
                 Log.d("ADDRESS****", address.toString())
-                val lekuPoi = data.getParcelableExtra<LekuPoi>(LEKU_POI)
-                Log.d("LekuPoi****", lekuPoi.toString())
+//                val lekuPoi = data.getParcelableExtra<LekuPoi>(LEKU_POI)
+//                Log.d("LekuPoi****", lekuPoi.toString())
             }
         }
         if (resultCode == Activity.RESULT_CANCELED) {
