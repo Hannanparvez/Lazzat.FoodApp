@@ -6,5 +6,6 @@
     <dimen name="padd_10">10dp</dimen>
     <dimen name="ic_delete">30dp</dimen>
     <dimen name="thumbnail">90dp</dimen>
+    <dimen name="dialog_margin">25dp</dimen>
 
 </resources>

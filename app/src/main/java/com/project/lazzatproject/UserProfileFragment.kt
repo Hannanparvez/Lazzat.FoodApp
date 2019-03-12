@@ -14,10 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
@@ -29,6 +26,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_profile.*
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.util.*
@@ -214,6 +212,7 @@ class UserProfileFragment : Fragment() {
                     // This method is called once with the initial value and again
                     // whenever data at this location is updated.
                     val username = dataSnapshot.child("name").value as String
+
                     val dp = dataSnapshot.child("profile_pic").value as String
                     Log.d("pic",dp)
 
@@ -226,6 +225,8 @@ class UserProfileFragment : Fragment() {
                     Log.d("pic", dp)
                     var usernametext = vie!!.findViewById<TextView>(R.id.user_profile_name)
                     usernametext.text = username
+
+
                     loadingprogress!!.dismiss()
                 }
 

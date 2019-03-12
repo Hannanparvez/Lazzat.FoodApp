@@ -4,12 +4,9 @@ package com.project.lazzatproject
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import android.location.Address
-import android.location.LocationManager
 import android.os.Bundle
-import android.provider.Settings
 import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,13 +16,8 @@ import android.view.Window
 import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.fragment.app.Fragment
-import com.firebase.ui.auth.AuthUI.getApplicationContext
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.places.Places
-import com.google.android.gms.location.places.ui.PlacePicker
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -229,9 +221,9 @@ GoogleApiClient.OnConnectionFailedListener{
         menuref.addListenerForSingleValueEvent(object : ValueEventListener {
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                 location=dataSnapshot.value as String
+//                 location=dataSnapshot.
                 loadingdialog.dismiss()
-                if(location=="none"){
+                if(!dataSnapshot.hasChildren()){
 //                        val builder = PlacePicker.IntentBuilder()
 //                        startActivityForResult(builder.build(activity), PLACE_PICKER_REQUEST)
                         val locationPickerIntent = LocationPickerActivity.Builder()
@@ -294,15 +286,15 @@ GoogleApiClient.OnConnectionFailedListener{
                 Log.d("TIME ZONE ID****", timeZoneId)
                 val timeZoneDisplayName = data.getStringExtra(TIME_ZONE_DISPLAY_NAME)
                 Log.d("TIME ZONE NAME****", timeZoneDisplayName)
-            } else if (requestCode == 2) {
+            } else if (requestCode == 123) {
                 val latitude = data.getDoubleExtra(LATITUDE, 0.0)
                 Log.d("LATITUDE****", latitude.toString())
                 val longitude = data.getDoubleExtra(LONGITUDE, 0.0)
                 Log.d("LONGITUDE****", longitude.toString())
                 val address = data.getStringExtra(LOCATION_ADDRESS)
                 Log.d("ADDRESS****", address.toString())
-                val lekuPoi = data.getParcelableExtra<LekuPoi>(LEKU_POI)
-                Log.d("LekuPoi****", lekuPoi.toString())
+//                val lekuPoi = data.getParcelableExtra<LekuPoi>(LEKU_POI)
+//                Log.d("LekuPoi****", lekuPoi.toString())
             }
         }
         if (resultCode == Activity.RESULT_CANCELED) {
