@@ -6,11 +6,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".UserHomeFragment">
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_menu"
+    <ExpandableListView
+        android:id="@+id/expandableListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/menu_view_item" />
+        android:dividerHeight="0.5dp">
+
+    </ExpandableListView>
+
 
 
 </RelativeLayout>

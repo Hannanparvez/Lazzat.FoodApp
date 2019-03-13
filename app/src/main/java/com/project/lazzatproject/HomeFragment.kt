@@ -136,7 +136,7 @@ GoogleApiClient.OnConnectionFailedListener{
 
                 val adp = ArrayAdapter(context,
                         android.R.layout.simple_spinner_item, listofcategories)
-            spinner.adapter = adp
+            spinner.adapter = adp as SpinnerAdapter?
             spinner.setSelection(0)
             spinner.onItemSelectedListener = object : OnItemSelectedListener {
 
