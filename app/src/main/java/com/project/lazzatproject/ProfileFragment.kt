@@ -261,7 +261,7 @@ class ProfileFragment : Fragment() {
                     .addOnProgressListener {
 
                         var progress = (100.0 * it.bytesTransferred / it
-                                .getTotalByteCount())
+                                .totalByteCount)
                         progressDialog.setMessage("Uploaded " + progress.toInt().toString() + "%");
                     }
         }
@@ -337,8 +337,8 @@ class ProfileFragment : Fragment() {
                     var shop_address=vie!!.findViewById<TextView>(R.id.shopaddress)
                     e_shop_description=shop_description
                     e_shop_name=shop_name
-                    shop_name.setText(dataSnapshot.child("shop_name").value as String)
-                    shop_description.setText(dataSnapshot.child("shop_description").value as String)
+                    shop_name.text = dataSnapshot.child("shop_name").value as String
+                    shop_description.text = dataSnapshot.child("shop_description").value as String
                     shop_address.text=dataSnapshot.child("location").child("address").value as String
                     loadingprogress!!.dismiss()
                 }

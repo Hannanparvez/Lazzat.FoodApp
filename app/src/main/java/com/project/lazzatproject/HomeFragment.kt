@@ -1,6 +1,6 @@
 package com.project.lazzatproject
-
-
+//AIzaSyCkfzdwM9uVw_AqA139EyRSkwNzFKpWjt0
+//34.083656, 74.797371
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
@@ -28,7 +28,7 @@ import com.schibstedspain.leku.*
 
 
 class HomeFragment : Fragment(),GoogleApiClient.ConnectionCallbacks,
-GoogleApiClient.OnConnectionFailedListener{
+        GoogleApiClient.OnConnectionFailedListener{
     override fun onConnectionSuspended(p0: Int) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -67,12 +67,12 @@ GoogleApiClient.OnConnectionFailedListener{
                 category_name!!.hint = "Category name"
                 category_name!!.inputType = InputType.TYPE_CLASS_TEXT
                 setNeutralButton("OK") { dialog, whichButton ->
-                    var Category = category_name!!.text.toString()
+                    val Category = category_name!!.text.toString()
                     if (Category != "") {
                         if (currentuser != null) {
                             myRef.child("Users").child(currentuser.uid).child("menu").child(Category).setValue("true")
                         }
-                        Toast.makeText(context, Category + " category has been created", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "$Category category has been created", Toast.LENGTH_SHORT).show()
 
                     }
                     dialog.dismiss()
@@ -94,7 +94,7 @@ GoogleApiClient.OnConnectionFailedListener{
 
 
             var productcategory=""
-            val dialog = Dialog(context)
+            val dialog = Dialog(context!!)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog.setContentView(R.layout.addmenudailog)
             dialog.setCancelable(true)
@@ -108,7 +108,7 @@ GoogleApiClient.OnConnectionFailedListener{
             val addproduct = dialog.findViewById(R.id.addproduct) as Button
             val canceladd = dialog.findViewById(R.id.canceladd) as Button
 
-            var listofcategories = arrayListOf<String>("none")
+            val listofcategories = arrayListOf<String>("none")
             val menuref = myRef.child("Users").child(currentuser!!.uid).child("menu")
             menuref.addValueEventListener(object : ValueEventListener {
 
@@ -134,15 +134,15 @@ GoogleApiClient.OnConnectionFailedListener{
 
 
 
-                val adp = ArrayAdapter(context,
-                        android.R.layout.simple_spinner_item, listofcategories)
+            val adp = ArrayAdapter(context!!,
+                    android.R.layout.simple_spinner_item, listofcategories)
             spinner.adapter = adp
             spinner.setSelection(0)
             spinner.onItemSelectedListener = object : OnItemSelectedListener {
 
                 override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                     // TODO Auto-generated method stub
-                   productcategory= spinner.getItemAtPosition(spinner.getSelectedItemPosition()).toString()
+                    productcategory= spinner.getItemAtPosition(spinner.getSelectedItemPosition()).toString()
 
                 }
 
@@ -221,27 +221,22 @@ GoogleApiClient.OnConnectionFailedListener{
         menuref.addListenerForSingleValueEvent(object : ValueEventListener {
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                 location=dataSnapshot.
+                location= (dataSnapshot.value as HashMap<*,*>).toString()
                 loadingdialog.dismiss()
-                if(!dataSnapshot.hasChildren()){
+                if(location=="none"){
 //                        val builder = PlacePicker.IntentBuilder()
 //                        startActivityForResult(builder.build(activity), PLACE_PICKER_REQUEST)
-                        val locationPickerIntent = LocationPickerActivity.Builder()
-                                .withLocation(34.083656, 74.797371)
-                                .withGeolocApiKey("AIzaSyCkfzdwM9uVw_AqA139EyRSkwNzFKpWjt0")
-                                .withSearchZone("en_In")
+                    val locationPickerIntent = LocationPickerActivity.Builder()
+                            .withLocation(34.083656, 74.797371)
+                            .withGeolocApiKey("AIzaSyCkfzdwM9uVw_AqA139EyRSkwNzFKpWjt0")
+                            .withSearchZone("en_In")
+                            .withSatelliteViewHidden()
+                            .withGooglePlacesEnabled()
+                            .withGoogleTimeZoneEnabled()
+                            .withVoiceSearchHidden()
+                            .build(context!!)
 
-//                                .shouldReturnOkOnBackPressed()
-//                                .withStreetHidden()
-//                                .withCityHidden()
-//                                .withZipCodeHidden()
-                                .withSatelliteViewHidden()
-                                .withGooglePlacesEnabled()
-                                .withGoogleTimeZoneEnabled()
-                                .withVoiceSearchHidden()
-                                .build(context!!)
-
-                        startActivityForResult(locationPickerIntent,123)
+                    startActivityForResult(locationPickerIntent,123)
 
                 }
 
@@ -260,11 +255,11 @@ GoogleApiClient.OnConnectionFailedListener{
                 // Failed to read value
             }
         })
-
-
-
     }
+
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val currentuser = mAuth!!.currentUser
         if (resultCode == Activity.RESULT_OK && data != null) {
             Log.d("RESULT****", "OK")
             if (requestCode == 1) {
@@ -289,10 +284,13 @@ GoogleApiClient.OnConnectionFailedListener{
             } else if (requestCode == 123) {
                 val latitude = data.getDoubleExtra(LATITUDE, 0.0)
                 Log.d("LATITUDE****", latitude.toString())
+                myRef.child("Users").child(currentuser!!.uid).child("location").child("latitude").setValue(latitude)
                 val longitude = data.getDoubleExtra(LONGITUDE, 0.0)
                 Log.d("LONGITUDE****", longitude.toString())
+                myRef.child("Users").child(currentuser.uid).child("location").child("longitude").setValue(longitude)
                 val address = data.getStringExtra(LOCATION_ADDRESS)
                 Log.d("ADDRESS****", address.toString())
+                myRef.child("Users").child(currentuser.uid).child("location").child("address").setValue(address)
 //                val lekuPoi = data.getParcelableExtra<LekuPoi>(LEKU_POI)
 //                Log.d("LekuPoi****", lekuPoi.toString())
             }
@@ -301,4 +299,5 @@ GoogleApiClient.OnConnectionFailedListener{
             Log.d("RESULT****", "CANCELLED")
         }
     }
+
 }
