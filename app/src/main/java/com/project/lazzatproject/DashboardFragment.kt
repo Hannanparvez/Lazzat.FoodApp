@@ -1,129 +1,224 @@
 package com.project.lazzatproject
 
 import android.app.AlertDialog
-import android.content.ContentValues.TAG
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.fragment.app.FragmentTransaction
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import java.util.*
+import kotlinx.android.synthetic.main.activity_owner.*
 
 
 class DashboardFragment : Fragment() {
-    private lateinit var v: View
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var listCont: MutableList<MenuItem>
     private var database = FirebaseDatabase.getInstance()
     private var myRef = database.reference
     private var mAuth: FirebaseAuth? = null
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    internal var expandableListView: ExpandableListView? = null
+    internal var adapter: CustomExpandableListAdapter? = null
+    internal var titleList: List<String> ? = null
+    var loadingdialog:AlertDialog?=null
 
-        Log.d("res", "oncreateview")
-        //just change the fragment_dashboard
-        //with the fragment you want to inflate
-        //like if the class is HomeFragment it should have R.layout.home_fragment
-        //if it is DashboardFragment it should have R.layout.fragment_dashboard
+    val data: HashMap<String, List<String>>
+        get() {
+            val listData = HashMap<String, List<String>>()
+            val currentuser=mAuth!!.currentUser
+            val menuref = myRef.child("Users").child(currentuser!!.uid).child("menu")
+
+            menuref.addValueEventListener(object : ValueEventListener {
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
 
 
+                    // This method is called once with the initial value and again
+                    // whenever data at this location is updated.
+                    for (snap in dataSnapshot.children) {
+                        val temp = ArrayList<String>()
+                        if (snap.hasChildren()){
+                            Log.d("test",snap.key.toString()+"has children")
+                            for (snaap in snap.children){
+                                temp.add(snaap.key.toString()+"$"+snaap.value.toString())
 
-        v = inflater.inflate(R.layout.fragment_dashboard, container, false)
-        recyclerView = v.findViewById<View>(R.id.recycler_view_menu) as RecyclerView
-        val viewAdapter = RecyclerViewAdapterMenu(this.context!!,listCont,context!!)
-        recyclerView.layoutManager = LinearLayoutManager(this.activity) as RecyclerView.LayoutManager?
-        recyclerView.adapter = viewAdapter
+                            }
+                        }
 
-        return v
+                        listData[snap.key.toString()]=temp
+                        Log.d("hi",snap.key.toString())
 
-    }
+                    }
+                    Log.d("hi",listData.size.toString())
+                    if (isVisible) {
+                        titleList = ArrayList(listData.keys)
+                        adapter = CustomExpandableListAdapter(context!!, titleList as ArrayList<String>, listData)
+                        expandableListView!!.setAdapter(adapter)
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.ownertop,menu)
-        super.onCreateOptionsMenu(menu, inflater)
-        var refresh=menu.findItem(R.id.refresh)
-        refresh.setVisible(true)
-        var signout=menu.findItem(R.id.sign_out1)
-        signout.setVisible(false)
-    }
+//                        expandableListView!!.setOnGroupExpandListener {
+//                            groupPosition -> Toast.makeText(context, (titleList as ArrayList<String>)[groupPosition] + " List Expanded.", Toast.LENGTH_SHORT).show()
+//                        }
+//
+//                        expandableListView!!.setOnGroupCollapseListener {
+//                            groupPosition -> Toast.makeText(context, (titleList as ArrayList<String>)[groupPosition] + " List Collapsed.", Toast.LENGTH_SHORT).show()
+//                        }
 
-    override fun onResume() {
-        super.onResume()
-        (activity as AppCompatActivity).supportActionBar!!.addOnMenuVisibilityListener {
+//                        expandableListView!!.setOnChildClickListener {
+//
+//                            parent, v, groupPosition, childPosition, id ->
+//
+//                            val dialog = Dialog(context)
+//                            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+//                            dialog.setContentView(R.layout.editmenuitem)
+//                            dialog.setCancelable(true)
+//                            var sp=listData[(titleList as ArrayList<String>)[groupPosition]]!!.get(childPosition).split("$")
+//
+//
+//                            // set the custom dialog components - text, image and button
+//                            val spinner = dialog.findViewById(R.id.productcategory1) as TextView
+//                            val productname = dialog.findViewById(R.id.productname1) as EditText
+//                            spinner.text="CATEGORY :"+(titleList as ArrayList<String>)[groupPosition]
+//                            productname.setText(sp[0])
+//                            val productprice = dialog.findViewById(R.id.productprice1) as EditText
+//                            productprice.setText(sp[1])
+//                            val removeitem = dialog.findViewById(R.id.removeitem) as Button
+//                            val edititem = dialog.findViewById(R.id.edititem) as Button
+//                            val editcancel=dialog.findViewById(R.id.canceledit) as Button
+//                            dialog.show()
+//                            editcancel.setOnClickListener{
+//                                dialog.dismiss()
+//                            }
+//                            removeitem.setOnClickListener{
+//                                menuref.child((titleList as ArrayList<String>)[groupPosition]).child(sp[0])
+//                                        .removeValue()
+//                                dialog.dismiss()
+//                                var ft: FragmentTransaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+//                                ft.replace(R.id.fragment_container, DashboardFragment() as Fragment);
+//                                ft.commit()
+////                                Toast.makeText(context,MenuItemList[position].name+" has been removed",Toast.LENGTH_SHORT).show()
+//                            }
+//                            edititem.setOnClickListener {
+//                                menuref.child((titleList as ArrayList<String>)[groupPosition]).child(sp[0])
+//                                        .setValue(productprice.text.toString())
+//
+//                                Toast.makeText(context,"Your product has been added",Toast.LENGTH_SHORT).show()
+//                                var ft: FragmentTransaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+//                                ft.replace(R.id.fragment_container, DashboardFragment() as Fragment);
+//                                ft.commit()
+//
+//                                dialog.dismiss()
+//
+//                            }
+//
+//
+////                            Toast.makeText(context, "Clicked: " + (titleList as ArrayList<String>)[groupPosition] + " -> " + listData[(titleList as ArrayList<String>)[groupPosition]]!!.get(childPosition), Toast.LENGTH_SHORT).show()
+//                            false
+//                        }
+                        loadingdialog!!.dismiss()
+                    }  // Sign in success, update UI with the signed-in user's information
 
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Failed to read value
+                }
+            })
+            return listData
         }
-    }
-
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        setHasOptionsMenu(true)
-
-        Log.d("res","on create")
-        super.onCreate(savedInstanceState)
+        mAuth = FirebaseAuth.getInstance()
         val loading = AlertDialog.Builder(activity)
         //View view = getLayoutInflater().inflate(R.layout.progress);
         loading.setView(R.layout.showprogress)
-        val dialog = loading.create()
-        dialog.show()
-
-        listCont = ArrayList()
-//        listCont.add(MenuItem("My Place", 100,"ih"))
-//        listCont.add(MenuItem("My Place", 100,"ih"))
-
-
-        mAuth = FirebaseAuth.getInstance()
+        loadingdialog= loading.create()
+        loadingdialog!!.show()
+        super.onCreate(savedInstanceState)
+                setHasOptionsMenu(true)
+    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        super.onCreate(savedInstanceState)
+        val view = inflater.inflate(R.layout.fragment_dashboard, container, false)
         val currentuser=mAuth!!.currentUser
+
         val menuref = myRef.child("Users").child(currentuser!!.uid).child("menu")
-        menuref.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
 
 
 
 
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                for (snap in dataSnapshot.children) {
-                    if(snap.hasChildren()){
-                        for (sn in snap.children){
-                            Log.d(TAG, snap.key.toString()+" : "+sn.key.toString()+" costs "+sn.value.toString())
-                            var pric=sn.value.toString()
-                            listCont.add(MenuItem(sn.key.toString(),pric.toInt(),snap.key.toString()))
-                        }
 
-//                        Toast.makeText(context,snap.key.toString()+"has children",Toast.LENGTH_SHORT).show()
-                    }
+        expandableListView =view!!.findViewById(R.id.expandableListView)
+        if (expandableListView != null) {
+            val listData = data
+            titleList = ArrayList(listData.keys)
+            adapter = CustomExpandableListAdapter(context!!, titleList as ArrayList<String>, listData)
+            expandableListView!!.setAdapter(adapter)
+//
+//            expandableListView!!.setOnGroupExpandListener { groupPosition -> Toast.makeText(context, (titleList as ArrayList<String>)[groupPosition] + " List Expanded.", Toast.LENGTH_SHORT).show() }
+//
+//            expandableListView!!.setOnGroupCollapseListener { groupPosition -> Toast.makeText(context, (titleList as ArrayList<String>)[groupPosition] + " List Collapsed.", Toast.LENGTH_SHORT).show() }
+
+            expandableListView!!.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
+                val dialog = Dialog(context)
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                dialog.setContentView(R.layout.editmenuitem)
+                dialog.setCancelable(true)
+                var sp=listData[(titleList as ArrayList<String>)[groupPosition]]!!.get(childPosition).split("$")
+
+
+                // set the custom dialog components - text, image and button
+                val spinner = dialog.findViewById(R.id.productcategory1) as TextView
+                val productname = dialog.findViewById(R.id.productname1) as EditText
+                spinner.text="CATEGORY :"+(titleList as ArrayList<String>)[groupPosition]
+                productname.setText(sp[0])
+                val productprice = dialog.findViewById(R.id.productprice1) as EditText
+                productprice.setText(sp[1])
+                val removeitem = dialog.findViewById(R.id.removeitem) as Button
+                val edititem = dialog.findViewById(R.id.edititem) as Button
+                val editcancel=dialog.findViewById(R.id.canceledit) as Button
+                dialog.show()
+                editcancel.setOnClickListener{
+                    dialog.dismiss()
                 }
-                Log.d(TAG, listCont.size.toString())
-                if (isVisible){
-
-                    val viewAdapter = RecyclerViewAdapterMenu(context!!,listCont,context!!)
-                    recyclerView.adapter = viewAdapter
+                removeitem.setOnClickListener{
+                    menuref.child((titleList as ArrayList<String>)[groupPosition]).child(sp[0])
+                            .removeValue()
+                    dialog.dismiss()
+                    var ft: FragmentTransaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+                    ft.replace(R.id.fragment_container, DashboardFragment() as Fragment);
+                    ft.commit()
+//                                Toast.makeText(context,MenuItemList[position].name+" has been removed",Toast.LENGTH_SHORT).show()
                 }
+                edititem.setOnClickListener {
+                    menuref.child((titleList as ArrayList<String>)[groupPosition]).child(sp[0])
+                            .setValue(productprice.text.toString())
 
-                dialog.dismiss()
+                    Toast.makeText(context,"Your product has been added",Toast.LENGTH_SHORT).show()
+                    var ft: FragmentTransaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+                    ft.replace(R.id.fragment_container, DashboardFragment() as Fragment);
+                    ft.commit()
 
+                    dialog.dismiss()
 
-                // Sign in success, update UI with the signed-in user's information
-
+                }
+//                Toast.makeText(context, "Clicked: " + (titleList as ArrayList<String>)[groupPosition] + " -> " + listData[(titleList as ArrayList<String>)[groupPosition]]!!.get(childPosition), Toast.LENGTH_SHORT).show()
+                false
             }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
-            }
-        })
-
-
-
-
+        }
+        return view
+    }
+        override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.ownertop,menu)
+        super.onCreateOptionsMenu(menu, inflater)
+            val addd=menu.findItem(R.id.addd)
+        var refresh=menu.findItem(R.id.refresh)
+        refresh.setVisible(true)
+            addd.setVisible(true)
+        var signout=menu.findItem(R.id.sign_out1)
+        signout.setVisible(false)
     }
 
 }

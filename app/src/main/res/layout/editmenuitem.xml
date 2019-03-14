@@ -2,25 +2,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/RelativeLayout11"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/textView21"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text=" Edit Menu Item"
-        android:textAlignment="center"
-        android:textSize="18sp" />
+        android:textSize="24sp" />
 
-    <Spinner
+    <TextView
         android:id="@+id/productcategory1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView21"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textStyle="normal|bold|italic" />
 
     <EditText
         android:id="@+id/productname1"
@@ -29,32 +32,53 @@
         android:layout_below="@+id/productcategory1"
         android:layout_centerHorizontal="true"
         android:ems="10"
-        android:hint="product name"/>
+        android:gravity="center"
+        android:hint="product name" />
+
 
     <EditText
         android:id="@+id/productprice1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/productname1"
         android:ems="10"
+        android:gravity="center"
         android:hint="product price"
-        android:inputType="textPersonName" />
+        android:inputType="number" />
 
-    <Button
-        android:id="@+id/removeitem"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/productprice1"
-        android:layout_marginLeft="100dp"
-        android:text="remove" />
+        android:gravity="center"
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/edititem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/productprice1"
-        android:clickable="true"
-        android:text="edit"
-        app:srcCompat="@drawable/fui_ic_check_circle_black_128dp" />
+        <Button
+            android:id="@+id/removeitem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:text="remove" />
+
+        <Button
+            android:id="@+id/edititem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:text="edit" />
+
+        <Button
+            android:id="@+id/canceledit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:text="cancel" />
+
+    </LinearLayout>
 
 </RelativeLayout>

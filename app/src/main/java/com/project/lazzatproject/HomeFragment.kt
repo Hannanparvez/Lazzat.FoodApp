@@ -134,9 +134,15 @@ class HomeFragment : Fragment(),GoogleApiClient.ConnectionCallbacks,
 
 
 
+<<<<<<< HEAD
             val adp = ArrayAdapter(context!!,
                     android.R.layout.simple_spinner_item, listofcategories)
             spinner.adapter = adp
+=======
+                val adp = ArrayAdapter(context,
+                        android.R.layout.simple_spinner_item, listofcategories)
+            spinner.adapter = adp as SpinnerAdapter?
+>>>>>>> b6110e11439b54a8bfc30828a024583cb8554f92
             spinner.setSelection(0)
             spinner.onItemSelectedListener = object : OnItemSelectedListener {
 

@@ -1,6 +1,8 @@
 package com.project.lazzatproject
 
 import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -8,15 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
-import kotlinx.android.synthetic.main.activity_main.*
-import android.content.Intent
-import android.content.SharedPreferences
-import android.util.Log
-import com.google.android.gms.tasks.Task
-import androidx.annotation.NonNull
-import com.google.android.gms.tasks.OnCompleteListener
 import com.firebase.ui.auth.AuthUI
-import android.view.View
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
