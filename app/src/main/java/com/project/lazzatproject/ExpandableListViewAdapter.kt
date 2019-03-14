@@ -24,12 +24,19 @@ class CustomExpandableListAdapter internal constructor(private val context: Cont
     override fun getChildView(listPosition: Int, expandedListPosition: Int, isLastChild: Boolean, convertView: View?, parent: ViewGroup): View {
         var convertView = convertView
         val expandedListText = getChild(listPosition, expandedListPosition) as String
+        val sp=expandedListText.split("$")
+        Log.d("hi1",sp[0])
+        Log.d("hi1",sp[1])
+
         if (convertView == null) {
             val layoutInflater = this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             convertView = layoutInflater.inflate(R.layout.list_row_child, null)
         }
         val expandedListTextView = convertView!!.findViewById<TextView>(R.id.expandedListItem)
-        expandedListTextView.text = expandedListText
+        val expandedListItemPrice=convertView!!.findViewById<TextView>(R.id.expandedListItemPrice)
+        expandedListTextView.text = sp[0]
+        expandedListItemPrice.text=sp[1]
+
         return convertView
     }
 

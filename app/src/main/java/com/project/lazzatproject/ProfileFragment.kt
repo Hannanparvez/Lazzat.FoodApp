@@ -73,12 +73,24 @@ class ProfileFragment : Fragment() {
                 nam = EditText(context)
                 nam!!.setText(e_shop_name!!.text)
                 nam!!.inputType = InputType.TYPE_CLASS_TEXT
-                setNeutralButton("OK") { dialog, whichButton ->
+                setNeutralButton("Update") { dialog, whichButton ->
+                    val mref = myRef.child("Users").child(currentuser!!.uid)
+                    mref.addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            mref.child("shop_name").setValue(nam!!.text.toString())
+                            // This method is called once with the initial value and again
+                            // whenever data at this location is updated.
 
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            // Failed to read value
+                        }
+                    })
                     dialog.dismiss()
 
                 }
-                setNegativeButton("NO") { dialog, whichButton ->
+                setNegativeButton("Cancel") { dialog, whichButton ->
 
                     //showMessage("Close the game or anything!")
                     dialog.dismiss()
@@ -109,12 +121,26 @@ class ProfileFragment : Fragment() {
                 des = EditText(context)
                 des!!.setText(e_shop_description!!.text)
                 des!!.inputType = InputType.TYPE_CLASS_TEXT
-                setNeutralButton("OK") { dialog, whichButton ->
+                setNeutralButton("Update") { dialog, whichButton ->
+                    val mref = myRef.child("Users").child(currentuser!!.uid)
+                    mref.addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            mref.child("shop_description").setValue(des!!.text.toString())
+                            // This method is called once with the initial value and again
+                            // whenever data at this location is updated.
+
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            // Failed to read value
+                        }
+                    })
+                    dialog.dismiss()
 
                     dialog.dismiss()
 
                 }
-                setNegativeButton("NO") { dialog, whichButton ->
+                setNegativeButton("Cancel") { dialog, whichButton ->
 
                     //showMessage("Close the game or anything!")
                     dialog.dismiss()

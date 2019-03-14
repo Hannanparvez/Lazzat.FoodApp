@@ -1,11 +1,12 @@
 package com.project.lazzatproject
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.ExpandableListAdapter
-import android.widget.ExpandableListView
-import android.widget.Toast
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.firebase.auth.FirebaseAuth
@@ -23,44 +24,14 @@ class DashboardFragment : Fragment() {
     internal var expandableListView: ExpandableListView? = null
     internal var adapter: CustomExpandableListAdapter? = null
     internal var titleList: List<String> ? = null
+    var loadingdialog:AlertDialog?=null
 
     val data: HashMap<String, List<String>>
         get() {
             val listData = HashMap<String, List<String>>()
-
-            val redmiMobiles = ArrayList<String>()
-            redmiMobiles.add("Redmi Y2")
-            redmiMobiles.add("Redmi S2")
-            redmiMobiles.add("Redmi Note 5 Pro")
-            redmiMobiles.add("Redmi Note 5")
-            redmiMobiles.add("Redmi 5 Plus")
-            redmiMobiles.add("Redmi Y1")
-            redmiMobiles.add("Redmi 3S Plus")
-
-            val micromaxMobiles = ArrayList<String>()
-            micromaxMobiles.add("Micromax Bharat Go")
-            micromaxMobiles.add("Micromax Bharat 5 Pro")
-            micromaxMobiles.add("Micromax Bharat 5")
-            micromaxMobiles.add("Micromax Canvas 1")
-            micromaxMobiles.add("Micromax Dual 5")
-
-            val appleMobiles = ArrayList<String>()
-            appleMobiles.add("iPhone 8")
-            appleMobiles.add("iPhone 8 Plus")
-            appleMobiles.add("iPhone X")
-            appleMobiles.add("iPhone 7 Plus")
-            appleMobiles.add("iPhone 7")
-            appleMobiles.add("iPhone 6 Plus")
-
-            val samsungMobiles = ArrayList<String>()
-            samsungMobiles.add("Samsung Galaxy S9+")
-            samsungMobiles.add("Samsung Galaxy Note 7")
-            samsungMobiles.add("Samsung Galaxy Note 5 Dual")
-            samsungMobiles.add("Samsung Galaxy S8")
-            samsungMobiles.add("Samsung Galaxy A8")
-            samsungMobiles.add("Samsung Galaxy Note 4")
             val currentuser=mAuth!!.currentUser
             val menuref = myRef.child("Users").child(currentuser!!.uid).child("menu")
+
             menuref.addValueEventListener(object : ValueEventListener {
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -73,7 +44,7 @@ class DashboardFragment : Fragment() {
                         if (snap.hasChildren()){
                             Log.d("test",snap.key.toString()+"has children")
                             for (snaap in snap.children){
-                                temp.add(snaap.key.toString()+"  RS: "+snaap.value.toString())
+                                temp.add(snaap.key.toString()+"$"+snaap.value.toString())
 
                             }
                         }
@@ -88,24 +59,67 @@ class DashboardFragment : Fragment() {
                         adapter = CustomExpandableListAdapter(context!!, titleList as ArrayList<String>, listData)
                         expandableListView!!.setAdapter(adapter)
 
-                        expandableListView!!.setOnGroupExpandListener { groupPosition -> Toast.makeText(context, (titleList as ArrayList<String>)[groupPosition] + " List Expanded.", Toast.LENGTH_SHORT).show() }
+//                        expandableListView!!.setOnGroupExpandListener {
+//                            groupPosition -> Toast.makeText(context, (titleList as ArrayList<String>)[groupPosition] + " List Expanded.", Toast.LENGTH_SHORT).show()
+//                        }
+//
+//                        expandableListView!!.setOnGroupCollapseListener {
+//                            groupPosition -> Toast.makeText(context, (titleList as ArrayList<String>)[groupPosition] + " List Collapsed.", Toast.LENGTH_SHORT).show()
+//                        }
 
-                        expandableListView!!.setOnGroupCollapseListener { groupPosition -> Toast.makeText(context, (titleList as ArrayList<String>)[groupPosition] + " List Collapsed.", Toast.LENGTH_SHORT).show() }
-
-                        expandableListView!!.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
-                            Toast.makeText(context, "Clicked: " + (titleList as ArrayList<String>)[groupPosition] + " -> " + listData[(titleList as ArrayList<String>)[groupPosition]]!!.get(childPosition), Toast.LENGTH_SHORT).show()
-                            false
-                        }
-                    }
-
-
-
-
-
-
-
-
-                    // Sign in success, update UI with the signed-in user's information
+//                        expandableListView!!.setOnChildClickListener {
+//
+//                            parent, v, groupPosition, childPosition, id ->
+//
+//                            val dialog = Dialog(context)
+//                            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+//                            dialog.setContentView(R.layout.editmenuitem)
+//                            dialog.setCancelable(true)
+//                            var sp=listData[(titleList as ArrayList<String>)[groupPosition]]!!.get(childPosition).split("$")
+//
+//
+//                            // set the custom dialog components - text, image and button
+//                            val spinner = dialog.findViewById(R.id.productcategory1) as TextView
+//                            val productname = dialog.findViewById(R.id.productname1) as EditText
+//                            spinner.text="CATEGORY :"+(titleList as ArrayList<String>)[groupPosition]
+//                            productname.setText(sp[0])
+//                            val productprice = dialog.findViewById(R.id.productprice1) as EditText
+//                            productprice.setText(sp[1])
+//                            val removeitem = dialog.findViewById(R.id.removeitem) as Button
+//                            val edititem = dialog.findViewById(R.id.edititem) as Button
+//                            val editcancel=dialog.findViewById(R.id.canceledit) as Button
+//                            dialog.show()
+//                            editcancel.setOnClickListener{
+//                                dialog.dismiss()
+//                            }
+//                            removeitem.setOnClickListener{
+//                                menuref.child((titleList as ArrayList<String>)[groupPosition]).child(sp[0])
+//                                        .removeValue()
+//                                dialog.dismiss()
+//                                var ft: FragmentTransaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+//                                ft.replace(R.id.fragment_container, DashboardFragment() as Fragment);
+//                                ft.commit()
+////                                Toast.makeText(context,MenuItemList[position].name+" has been removed",Toast.LENGTH_SHORT).show()
+//                            }
+//                            edititem.setOnClickListener {
+//                                menuref.child((titleList as ArrayList<String>)[groupPosition]).child(sp[0])
+//                                        .setValue(productprice.text.toString())
+//
+//                                Toast.makeText(context,"Your product has been added",Toast.LENGTH_SHORT).show()
+//                                var ft: FragmentTransaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+//                                ft.replace(R.id.fragment_container, DashboardFragment() as Fragment);
+//                                ft.commit()
+//
+//                                dialog.dismiss()
+//
+//                            }
+//
+//
+////                            Toast.makeText(context, "Clicked: " + (titleList as ArrayList<String>)[groupPosition] + " -> " + listData[(titleList as ArrayList<String>)[groupPosition]]!!.get(childPosition), Toast.LENGTH_SHORT).show()
+//                            false
+//                        }
+                        loadingdialog!!.dismiss()
+                    }  // Sign in success, update UI with the signed-in user's information
 
                 }
 
@@ -113,25 +127,26 @@ class DashboardFragment : Fragment() {
                     // Failed to read value
                 }
             })
-
-
-
-//            listData["Redmi"] = redmiMobiles
-//            listData["Micromax"] = micromaxMobiles
-//            listData["Apple"] = appleMobiles
-//            listData["Samsung"] = samsungMobiles
-            Log.d("soid",listData.size.toString())
-//            Toast.makeText(context,listData.size.toString(), Toast.LENGTH_SHORT).show()
             return listData
         }
     override fun onCreate(savedInstanceState: Bundle?) {
         mAuth = FirebaseAuth.getInstance()
+        val loading = AlertDialog.Builder(activity)
+        //View view = getLayoutInflater().inflate(R.layout.progress);
+        loading.setView(R.layout.showprogress)
+        loadingdialog= loading.create()
+        loadingdialog!!.show()
         super.onCreate(savedInstanceState)
                 setHasOptionsMenu(true)
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreate(savedInstanceState)
         val view = inflater.inflate(R.layout.fragment_dashboard, container, false)
+        val currentuser=mAuth!!.currentUser
+
+        val menuref = myRef.child("Users").child(currentuser!!.uid).child("menu")
+
+
 
 
 
@@ -141,13 +156,55 @@ class DashboardFragment : Fragment() {
             titleList = ArrayList(listData.keys)
             adapter = CustomExpandableListAdapter(context!!, titleList as ArrayList<String>, listData)
             expandableListView!!.setAdapter(adapter)
-
-            expandableListView!!.setOnGroupExpandListener { groupPosition -> Toast.makeText(context, (titleList as ArrayList<String>)[groupPosition] + " List Expanded.", Toast.LENGTH_SHORT).show() }
-
-            expandableListView!!.setOnGroupCollapseListener { groupPosition -> Toast.makeText(context, (titleList as ArrayList<String>)[groupPosition] + " List Collapsed.", Toast.LENGTH_SHORT).show() }
+//
+//            expandableListView!!.setOnGroupExpandListener { groupPosition -> Toast.makeText(context, (titleList as ArrayList<String>)[groupPosition] + " List Expanded.", Toast.LENGTH_SHORT).show() }
+//
+//            expandableListView!!.setOnGroupCollapseListener { groupPosition -> Toast.makeText(context, (titleList as ArrayList<String>)[groupPosition] + " List Collapsed.", Toast.LENGTH_SHORT).show() }
 
             expandableListView!!.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
-                Toast.makeText(context, "Clicked: " + (titleList as ArrayList<String>)[groupPosition] + " -> " + listData[(titleList as ArrayList<String>)[groupPosition]]!!.get(childPosition), Toast.LENGTH_SHORT).show()
+                val dialog = Dialog(context)
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                dialog.setContentView(R.layout.editmenuitem)
+                dialog.setCancelable(true)
+                var sp=listData[(titleList as ArrayList<String>)[groupPosition]]!!.get(childPosition).split("$")
+
+
+                // set the custom dialog components - text, image and button
+                val spinner = dialog.findViewById(R.id.productcategory1) as TextView
+                val productname = dialog.findViewById(R.id.productname1) as EditText
+                spinner.text="CATEGORY :"+(titleList as ArrayList<String>)[groupPosition]
+                productname.setText(sp[0])
+                val productprice = dialog.findViewById(R.id.productprice1) as EditText
+                productprice.setText(sp[1])
+                val removeitem = dialog.findViewById(R.id.removeitem) as Button
+                val edititem = dialog.findViewById(R.id.edititem) as Button
+                val editcancel=dialog.findViewById(R.id.canceledit) as Button
+                dialog.show()
+                editcancel.setOnClickListener{
+                    dialog.dismiss()
+                }
+                removeitem.setOnClickListener{
+                    menuref.child((titleList as ArrayList<String>)[groupPosition]).child(sp[0])
+                            .removeValue()
+                    dialog.dismiss()
+                    var ft: FragmentTransaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+                    ft.replace(R.id.fragment_container, DashboardFragment() as Fragment);
+                    ft.commit()
+//                                Toast.makeText(context,MenuItemList[position].name+" has been removed",Toast.LENGTH_SHORT).show()
+                }
+                edititem.setOnClickListener {
+                    menuref.child((titleList as ArrayList<String>)[groupPosition]).child(sp[0])
+                            .setValue(productprice.text.toString())
+
+                    Toast.makeText(context,"Your product has been added",Toast.LENGTH_SHORT).show()
+                    var ft: FragmentTransaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+                    ft.replace(R.id.fragment_container, DashboardFragment() as Fragment);
+                    ft.commit()
+
+                    dialog.dismiss()
+
+                }
+//                Toast.makeText(context, "Clicked: " + (titleList as ArrayList<String>)[groupPosition] + " -> " + listData[(titleList as ArrayList<String>)[groupPosition]]!!.get(childPosition), Toast.LENGTH_SHORT).show()
                 false
             }
         }
@@ -156,8 +213,10 @@ class DashboardFragment : Fragment() {
         override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.ownertop,menu)
         super.onCreateOptionsMenu(menu, inflater)
+            val addd=menu.findItem(R.id.addd)
         var refresh=menu.findItem(R.id.refresh)
         refresh.setVisible(true)
+            addd.setVisible(true)
         var signout=menu.findItem(R.id.sign_out1)
         signout.setVisible(false)
     }

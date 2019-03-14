@@ -7,17 +7,28 @@
 
     <TextView
         android:id="@+id/expandedListItem"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
         android:textColor="@android:color/black"
         android:textSize="17dp" />
 
     <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+        android:textColor="@android:color/black"
+        android:textSize="17dp"
+        android:text="RS." />
+
+    <TextView
         android:id="@+id/expandedListItemPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number" />
+        android:inputType="number"
+        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+        android:textColor="@android:color/black"
+        android:textSize="17dp" />
 
 </LinearLayout>

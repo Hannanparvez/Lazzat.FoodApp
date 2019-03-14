@@ -75,6 +75,13 @@ class Owner_dashboard : AppCompatActivity(), BottomNavigationView.OnNavigationIt
 
 
             }
+            addd -> {
+                var fragment: Fragment? = null
+                fragment=HomeFragment()
+
+                loadFragment(fragment)
+            }
+
 
 
 
@@ -96,6 +103,8 @@ class Owner_dashboard : AppCompatActivity(), BottomNavigationView.OnNavigationIt
             navigation_notifications -> fragment = NotificationsFragment()
 
             navigation_profile -> fragment = ProfileFragment()
+
+
  }
 
         return loadFragment(fragment)
