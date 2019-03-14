@@ -221,9 +221,10 @@ class HomeFragment : Fragment(),GoogleApiClient.ConnectionCallbacks,
         menuref.addListenerForSingleValueEvent(object : ValueEventListener {
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                location= (dataSnapshot.value as HashMap<*,*>).toString()
+                location= dataSnapshot.value.toString()
                 loadingdialog.dismiss()
-                if(location=="none"){
+                val con = activity?.applicationContext
+                if(location=="none" && con != null){
 //                        val builder = PlacePicker.IntentBuilder()
 //                        startActivityForResult(builder.build(activity), PLACE_PICKER_REQUEST)
                     val locationPickerIntent = LocationPickerActivity.Builder()
@@ -234,7 +235,7 @@ class HomeFragment : Fragment(),GoogleApiClient.ConnectionCallbacks,
                             .withGooglePlacesEnabled()
                             .withGoogleTimeZoneEnabled()
                             .withVoiceSearchHidden()
-                            .build(context!!)
+                            .build(con)
 
                     startActivityForResult(locationPickerIntent,123)
 
@@ -291,8 +292,6 @@ class HomeFragment : Fragment(),GoogleApiClient.ConnectionCallbacks,
                 val address = data.getStringExtra(LOCATION_ADDRESS)
                 Log.d("ADDRESS****", address.toString())
                 myRef.child("Users").child(currentuser.uid).child("location").child("address").setValue(address)
-//                val lekuPoi = data.getParcelableExtra<LekuPoi>(LEKU_POI)
-//                Log.d("LekuPoi****", lekuPoi.toString())
             }
         }
         if (resultCode == Activity.RESULT_CANCELED) {

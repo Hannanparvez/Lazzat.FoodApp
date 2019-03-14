@@ -21,6 +21,7 @@ class Owner_dashboard : AppCompatActivity(), BottomNavigationView.OnNavigationIt
     var sharedpref: SharedPreferences?=null
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         sharedpref=this.getSharedPreferences("actype", Context.MODE_PRIVATE)
@@ -28,24 +29,22 @@ class Owner_dashboard : AppCompatActivity(), BottomNavigationView.OnNavigationIt
         setContentView(R.layout.activity_owner)
 
         setSupportActionBar(findViewById(toolbar2))
-
-        //loading the default fragment
         loadFragment(HomeFragment())
 
+
+
+        //loading the default fragment
         //getting bottom navigation view and attaching the listener
 
         val navigation = this.findViewById<BottomNavigationView>(navigation)
         navigation.setOnNavigationItemSelectedListener(this)
+
+
     }
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.ownertop, menu)
-//
-
-
-
-
 
         return true
     }
