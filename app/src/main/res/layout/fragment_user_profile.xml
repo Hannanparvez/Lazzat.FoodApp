@@ -12,7 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/borderback" />
+            android:src="@drawable/back" />
 
         <ImageButton
             android:id="@+id/user_profile_photo"

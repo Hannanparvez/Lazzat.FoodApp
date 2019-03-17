@@ -1,14 +1,18 @@
 package com.project.lazzatproject
 
 import android.content.Context
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-
+import com.squareup.picasso.Picasso
+import com.google.android.libraries.places.internal.v
 
 
 
@@ -26,9 +30,22 @@ class RecycleViewAdapter(private var context: Context, private var restaurantLis
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.name.text = restaurantList[position].name
         holder.spec.text = restaurantList[position].spec
-        holder.imageView.setImageResource(restaurantList[position].photo)
+//        holder.imageView.setImageResource(restaurantList[position].photo)
+        holder.imageView.clipToOutline = true
+        Log.d("han",restaurantList[position].photo)
+        if (restaurantList[position].photo=="none"){
+            Picasso.get().load(R.drawable.back).into(holder.imageView)
+        }
+        else {
+            Picasso.get().load(restaurantList[position].photo).into(holder.imageView)
+        }
         holder.itemView.setOnClickListener(View.OnClickListener {
-              Toast.makeText(context,restaurantList[position].name, Toast.LENGTH_SHORT).show()
+
+            val intento = Intent(it.context, restaurent::class.java)
+            intento.putExtra("STRING_I_NEED", restaurantList[position].email)
+
+            context.startActivity(intento)
+            Toast.makeText(context,restaurantList[position].name, Toast.LENGTH_SHORT).show()
         })
 
 

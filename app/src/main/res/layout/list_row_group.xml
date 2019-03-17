@@ -10,10 +10,10 @@
         android:id="@+id/listTitle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:textColor="@color/colorAccent"
-        android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
         android:textSize="17dp" />
 
 </LinearLayout>

@@ -14,7 +14,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.activity_owner.*
+
 
 
 class DashboardFragment : Fragment() {
@@ -67,57 +67,6 @@ class DashboardFragment : Fragment() {
 //                            groupPosition -> Toast.makeText(context, (titleList as ArrayList<String>)[groupPosition] + " List Collapsed.", Toast.LENGTH_SHORT).show()
 //                        }
 
-//                        expandableListView!!.setOnChildClickListener {
-//
-//                            parent, v, groupPosition, childPosition, id ->
-//
-//                            val dialog = Dialog(context)
-//                            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-//                            dialog.setContentView(R.layout.editmenuitem)
-//                            dialog.setCancelable(true)
-//                            var sp=listData[(titleList as ArrayList<String>)[groupPosition]]!!.get(childPosition).split("$")
-//
-//
-//                            // set the custom dialog components - text, image and button
-//                            val spinner = dialog.findViewById(R.id.productcategory1) as TextView
-//                            val productname = dialog.findViewById(R.id.productname1) as EditText
-//                            spinner.text="CATEGORY :"+(titleList as ArrayList<String>)[groupPosition]
-//                            productname.setText(sp[0])
-//                            val productprice = dialog.findViewById(R.id.productprice1) as EditText
-//                            productprice.setText(sp[1])
-//                            val removeitem = dialog.findViewById(R.id.removeitem) as Button
-//                            val edititem = dialog.findViewById(R.id.edititem) as Button
-//                            val editcancel=dialog.findViewById(R.id.canceledit) as Button
-//                            dialog.show()
-//                            editcancel.setOnClickListener{
-//                                dialog.dismiss()
-//                            }
-//                            removeitem.setOnClickListener{
-//                                menuref.child((titleList as ArrayList<String>)[groupPosition]).child(sp[0])
-//                                        .removeValue()
-//                                dialog.dismiss()
-//                                var ft: FragmentTransaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
-//                                ft.replace(R.id.fragment_container, DashboardFragment() as Fragment);
-//                                ft.commit()
-////                                Toast.makeText(context,MenuItemList[position].name+" has been removed",Toast.LENGTH_SHORT).show()
-//                            }
-//                            edititem.setOnClickListener {
-//                                menuref.child((titleList as ArrayList<String>)[groupPosition]).child(sp[0])
-//                                        .setValue(productprice.text.toString())
-//
-//                                Toast.makeText(context,"Your product has been added",Toast.LENGTH_SHORT).show()
-//                                var ft: FragmentTransaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
-//                                ft.replace(R.id.fragment_container, DashboardFragment() as Fragment);
-//                                ft.commit()
-//
-//                                dialog.dismiss()
-//
-//                            }
-//
-//
-////                            Toast.makeText(context, "Clicked: " + (titleList as ArrayList<String>)[groupPosition] + " -> " + listData[(titleList as ArrayList<String>)[groupPosition]]!!.get(childPosition), Toast.LENGTH_SHORT).show()
-//                            false
-//                        }
                         loadingdialog!!.dismiss()
                     }  // Sign in success, update UI with the signed-in user's information
 
@@ -188,7 +137,7 @@ class DashboardFragment : Fragment() {
                             .removeValue()
                     dialog.dismiss()
                     var ft: FragmentTransaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
-                    ft.replace(R.id.fragment_container, DashboardFragment() as Fragment);
+                    ft.replace(R.id.fragment_container, DashboardFragment() as Fragment)
                     ft.commit()
 //                                Toast.makeText(context,MenuItemList[position].name+" has been removed",Toast.LENGTH_SHORT).show()
                 }
