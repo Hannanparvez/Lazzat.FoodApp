@@ -26,6 +26,7 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -40,6 +41,8 @@ open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, G
 
     private var database = FirebaseDatabase.getInstance()
     private var myRef = database.reference
+    private var mAuth: FirebaseAuth? = null
+
 
     private lateinit var v: View
     private lateinit var recyclerView: RecyclerView
@@ -69,6 +72,9 @@ open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, G
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
+
+        mAuth = FirebaseAuth.getInstance()
+
         v = inflater.inflate(R.layout.fragment_user_home, container, false)
         recyclerView = v.findViewById<View>(R.id.recycler_view) as RecyclerView
         val viewAdapter = RecycleViewAdapter(this.context!!, listCont)
@@ -89,7 +95,7 @@ open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, G
 
         mLocationManager = activity!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
-        Log.d("gggg","uooo");
+        Log.d("gggg","uooo")
         checkLocation()
         Log.d(ContentValues.TAG, "inside onCreate(): ")
 
@@ -115,10 +121,10 @@ open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, G
             override fun onDataChange(p0: DataSnapshot) {
                 try {
                     Log.d(ContentValues.TAG, "inside onDataChange(): ")
-
                     val td = p0.value as HashMap<*, *>
-
+                    val hashMap: HashMap<String,Double> = HashMap()
                     for(key in td.keys){
+
                         Log.d(ContentValues.TAG, "inside for loop: ")
 
                         val post = td[key] as HashMap<*, *>
@@ -129,16 +135,21 @@ open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, G
                             val owner_lon = a["longitude"]
                             val owner_name = post["name"]
 
-
-                            var dist = distance(owner_lat as Double, owner_lon as Double,lat,lon)
+                            val dist = distance(owner_lat as Double, owner_lon as Double,lat,lon)
 
                             Log.d(TAG,"Owner $owner_name has location ($owner_lat,$owner_lon) with distance $dist ")
-                            Log.d(ContentValues.TAG, "inside if(): ")
+
                             listCont.add(Restaurant(post["name"] as String, post["shop_description"] as String,post["profile_pic"] as String,post["email"] as String))
+
+                            hashMap[key.toString()] = dist.toDouble()
                         }
                     }
-
+                        for(key in hashMap.keys){
+                            Log.d(TAG,"$key = ${hashMap[key]}")
+                        }
+                    Log.d(TAG,"size is ${hashMap.size}")
                 }catch (ex:Exception){}
+
                 if (isVisible){
 
                     val viewAdapter = RecycleViewAdapter(context!!,listCont)

@@ -21,16 +21,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-<<<<<<< HEAD
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-=======
-        android:theme="@style/AppTheme">
+
         <activity
             android:name=".restaurent"
-            android:label="@string/title_activity_restaurent"></activity>
+            android:label="@string/title_activity_restaurent" />
 
->>>>>>> 452f5dc96bbc348e416a5a1f6fc2f4770e13ca76
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCkfzdwM9uVw_AqA139EyRSkwNzFKpWjt0" />
@@ -44,11 +41,11 @@
         </activity>
         <activity
             android:name=".Owner_dashboard"
-            android:label="@string/title_activity_owner_dashboard"></activity>
+            android:label="@string/title_activity_owner_dashboard" />
         <activity
             android:name=".signup"
             android:label="@string/title_activity_signup" />
-        <activity android:name=".signin"></activity>
+        <activity android:name=".signin" />
         <activity android:name=".MainActivity" />
         <activity
             android:name="com.schibstedspain.leku.LocationPickerActivity"

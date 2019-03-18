@@ -205,7 +205,7 @@ class UserProfileFragment : Fragment() {
 
 
         if (currentuser != null) {
-            val mref = myRef.child("Users").child(currentuser!!.uid)
+            val mref = myRef.child("Users").child(currentuser.uid)
             mref.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
 

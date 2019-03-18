@@ -1,5 +1,6 @@
 package com.project.lazzatproject
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Typeface
 import android.util.Log
@@ -21,6 +22,7 @@ class CustomExpandableListAdapter internal constructor(private val context: Cont
     }
 
 
+    @SuppressLint("InflateParams")
     override fun getChildView(listPosition: Int, expandedListPosition: Int, isLastChild: Boolean, convertView: View?, parent: ViewGroup): View {
         var convertView = convertView
         val expandedListText = getChild(listPosition, expandedListPosition) as String
@@ -33,7 +35,7 @@ class CustomExpandableListAdapter internal constructor(private val context: Cont
             convertView = layoutInflater.inflate(R.layout.list_row_child, null)
         }
         val expandedListTextView = convertView!!.findViewById<TextView>(R.id.expandedListItem)
-        val expandedListItemPrice=convertView!!.findViewById<TextView>(R.id.expandedListItemPrice)
+        val expandedListItemPrice= convertView.findViewById<TextView>(R.id.expandedListItemPrice)
         expandedListTextView.text = sp[0]
         expandedListItemPrice.text=sp[1]
 
@@ -56,6 +58,7 @@ class CustomExpandableListAdapter internal constructor(private val context: Cont
         return listPosition.toLong()
     }
 
+    @SuppressLint("InflateParams")
     override fun getGroupView(listPosition: Int, isExpanded: Boolean, convertView: View?, parent: ViewGroup): View {
         var convertView = convertView
         val listTitle = getGroup(listPosition) as String

@@ -1,5 +1,8 @@
+@file:Suppress("DEPRECATION")
+
 package com.project.lazzatproject
 
+import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
 import android.app.Dialog
@@ -48,6 +51,7 @@ class ProfileFragment : Fragment() {
     private var loadingprogress: AlertDialog? = null
 
 
+    @SuppressLint("RtlHardcoded")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         //just change the fragment_dashboard
         //with the fragment you want to inflate
@@ -97,8 +101,8 @@ class ProfileFragment : Fragment() {
                 }
             }
             val dialog = alert.create()
-            var container: FrameLayout  =FrameLayout(context);
-            var params:FrameLayout.LayoutParams  = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            val container: FrameLayout  =FrameLayout(context)
+            val params:FrameLayout.LayoutParams  = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.leftMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin);
             params.rightMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin)
             nam!!.layoutParams = params;
@@ -147,8 +151,8 @@ class ProfileFragment : Fragment() {
                 }
             }
             val dialog = alert.create()
-            var container: FrameLayout  =FrameLayout(context);
-            var params:FrameLayout.LayoutParams  = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            val container: FrameLayout  =FrameLayout(context)
+            val params:FrameLayout.LayoutParams  = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.leftMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin);
             params.rightMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin)
             des!!.layoutParams = params;
@@ -191,7 +195,7 @@ class ProfileFragment : Fragment() {
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog.setContentView(R.layout.profilepic)
             val image = dialog.findViewById(R.id.dp1) as ImageView
-            var currentuser = mAuth!!.currentUser
+            val currentuser = mAuth!!.currentUser
 
 
             if (currentuser != null) {
@@ -211,7 +215,7 @@ class ProfileFragment : Fragment() {
                                     .fit().centerCrop().into(image);
                         }
                         Log.d("pic", dp)
-                        var usernametext = vie!!.findViewById<TextView>(R.id.owner_profile_name1)
+                        val usernametext = vie!!.findViewById<TextView>(R.id.owner_profile_name1)
                         usernametext.text = username
                         loadingprogress!!.dismiss()
                     }
@@ -256,20 +260,20 @@ class ProfileFragment : Fragment() {
     private fun uploadImage() {
 
         if (filePath != null) {
-            var progressDialog: ProgressDialog = ProgressDialog(context);
+            val progressDialog: ProgressDialog = ProgressDialog(context);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            var ref: StorageReference = mStorageRef!!.child("images/" + currentuser!!.uid + "/" + UUID.randomUUID().toString());
+            val ref: StorageReference = mStorageRef!!.child("images/" + currentuser!!.uid + "/" + UUID.randomUUID().toString());
             ref.putFile(filePath!!)
                     .addOnSuccessListener {
 
 
                         progressDialog.dismiss();
-                        var url = it.metadata!!.reference!!.downloadUrl
+                        val url = it.metadata!!.reference!!.downloadUrl
                         url.addOnSuccessListener {
 
-                            var dpurl = it.toString();
+                            val dpurl = it.toString();
                             myRef.child("Users").child(currentuser!!.uid).child("profile_pic").setValue(dpurl)
 
                         }
@@ -286,7 +290,7 @@ class ProfileFragment : Fragment() {
                     }
                     .addOnProgressListener {
 
-                        var progress = (100.0 * it.bytesTransferred / it
+                        val progress = (100.0 * it.bytesTransferred / it
                                 .totalByteCount)
                         progressDialog.setMessage("Uploaded " + progress.toInt().toString() + "%");
                     }
@@ -312,7 +316,7 @@ class ProfileFragment : Fragment() {
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 50, ByteArrayOutputStream())
                 Log.d("pic", filePath.toString())
                 val image = choosedp!!.findViewById(R.id.dp1) as ImageView
-                image!!.setImageBitmap(bitmap)
+                image.setImageBitmap(bitmap)
 
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -321,11 +325,11 @@ class ProfileFragment : Fragment() {
         }
         else if (requestCode == 123 && data != null && data.data != null) {
 
-            val latitude = data!!.getDoubleExtra(LATITUDE, 0.0)
+            val latitude = data.getDoubleExtra(LATITUDE, 0.0)
             Log.d("LATITUDE****", latitude.toString())
-            val longitude = data!!.getDoubleExtra(LONGITUDE, 0.0)
+            val longitude = data.getDoubleExtra(LONGITUDE, 0.0)
             Log.d("LONGITUDE****", longitude.toString())
-            val address = data!!.getStringExtra(LOCATION_ADDRESS)
+            val address = data.getStringExtra(LOCATION_ADDRESS)
             Log.d("ADDRESS****", address.toString())
 //                val lekuPoi = data.getParcelableExtra<LekuPoi>(LEKU_POI)
 //                Log.d("LekuPoi****", lekuPoi.toString())
@@ -334,11 +338,11 @@ class ProfileFragment : Fragment() {
 
     private fun update() {
 
-        var currentuser = mAuth!!.currentUser
+        val currentuser = mAuth!!.currentUser
 
 
         if (currentuser != null) {
-            val mref = myRef.child("Users").child(currentuser!!.uid)
+            val mref = myRef.child("Users").child(currentuser.uid)
             mref.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
 
@@ -356,11 +360,12 @@ class ProfileFragment : Fragment() {
                                 .fit().centerCrop().into(vie!!.findViewById<ImageView>(R.id.owner_profile_pic));
                     }
                     Log.d("pic", dp)
-                    var usernametext = vie!!.findViewById<TextView>(R.id.owner_profile_name1)
+
+                    val usernametext = vie!!.findViewById<TextView>(R.id.owner_profile_name1)
                     usernametext.text = username
-                    var shop_name=vie!!.findViewById<TextView>(R.id.shopname)
-                    var shop_description=vie!!.findViewById<TextView>(R.id.shopdescription)
-                    var shop_address=vie!!.findViewById<TextView>(R.id.shopaddress)
+                    val shop_name=vie!!.findViewById<TextView>(R.id.shopname)
+                    val shop_description=vie!!.findViewById<TextView>(R.id.shopdescription)
+                    val shop_address=vie!!.findViewById<TextView>(R.id.shopaddress)
                     e_shop_description=shop_description
                     e_shop_name=shop_name
                     shop_name.text = dataSnapshot.child("shop_name").value as String

@@ -1,5 +1,6 @@
 package com.project.lazzatproject
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
@@ -88,6 +89,7 @@ class DashboardFragment : Fragment() {
         super.onCreate(savedInstanceState)
                 setHasOptionsMenu(true)
     }
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreate(savedInstanceState)
         val view = inflater.inflate(R.layout.fragment_dashboard, container, false)
