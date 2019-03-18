@@ -15,5 +15,6 @@
     <string name="title_activity_signup">signup</string>
     <string name="title_activity_owner_dashboard">Owner_dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_activity_restaurent">restaurent</string>
 
 </resources>

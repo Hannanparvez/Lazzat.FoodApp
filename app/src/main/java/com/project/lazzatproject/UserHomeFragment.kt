@@ -134,7 +134,7 @@ open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, G
 
                             Log.d(TAG,"Owner $owner_name has location ($owner_lat,$owner_lon) with distance $dist ")
                             Log.d(ContentValues.TAG, "inside if(): ")
-                            listCont.add(Restaurant(post["name"] as String, "Food!!!", R.drawable.fifth))
+                            listCont.add(Restaurant(post["name"] as String, post["shop_description"] as String,post["profile_pic"] as String,post["email"] as String))
                         }
                     }
 

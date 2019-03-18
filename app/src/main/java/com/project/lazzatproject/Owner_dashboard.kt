@@ -75,10 +75,9 @@ class Owner_dashboard : AppCompatActivity(), BottomNavigationView.OnNavigationIt
 
             }
             addd -> {
-                var fragment: Fragment? = null
-                fragment=HomeFragment()
+               var  bottomNavigationView:BottomNavigationView? = findViewById(navigation)
+                bottomNavigationView!!.selectedItemId = R.id.navigation_home
 
-                loadFragment(fragment)
             }
 
 

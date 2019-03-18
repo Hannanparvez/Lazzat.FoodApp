@@ -6,17 +6,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-  <ImageView
-      android:id="@+id/imageView2"
-      android:layout_width="125dp"
-      android:layout_height="100dp"
-      android:layout_marginStart="8dp"
-      android:layout_marginTop="8dp"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      tools:src="@tools:sample/avatars"
-      tools:srcCompat="@drawable/first"
-      android:contentDescription="TODO" />
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/profile_circular_border_imageview"
+        android:contentDescription="TODO"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars"
+        tools:srcCompat="@drawable/first" />
 
   <TextView
       android:id="@+id/restaurantname"

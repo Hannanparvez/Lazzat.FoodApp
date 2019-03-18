@@ -17,7 +17,7 @@
             android:layout_height="155dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
-            android:src="@drawable/borderback" />
+            android:src="@drawable/back" />
         <!-- Email Label -->
         <TextView
             android:id="@+id/speciality"

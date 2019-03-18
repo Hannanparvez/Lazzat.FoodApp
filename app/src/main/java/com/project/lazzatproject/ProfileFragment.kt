@@ -204,7 +204,7 @@ class ProfileFragment : Fragment() {
                         val username = dataSnapshot.child("name").value as String
                         val dp = dataSnapshot.child("profile_pic").value as String
 
-                        if (dp == "true") {
+                        if (dp == "none") {
                             choosedp!!.findViewById<ImageView>(R.id.dp1).setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_camera));
                         } else {
                             Picasso.get().load(dp).config(Bitmap.Config.RGB_565)
