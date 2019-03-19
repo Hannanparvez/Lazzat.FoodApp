@@ -43,6 +43,7 @@ class RecycleViewAdapter(private var context: Context, private var restaurantLis
 
             val intento = Intent(it.context, restaurent::class.java)
             intento.putExtra("STRING_I_NEED", restaurantList[position].email)
+            intento.putExtra("UID",restaurantList[position].uid)
 
             context.startActivity(intento)
             Toast.makeText(context,restaurantList[position].name, Toast.LENGTH_SHORT).show()

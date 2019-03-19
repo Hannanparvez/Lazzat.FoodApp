@@ -76,7 +76,7 @@ class UserHomeFragment : Fragment() {
                         val post = td[key] as HashMap<*, *>
                         if(post["type"] as String == "owner") {
                             Log.d(ContentValues.TAG, "inside if(): ")
-                            listCont.add(Restaurant(post["name"] as String, post["shop_description"] as String,post["profile_pic"] as String,post["email"] as String))
+                            listCont.add(Restaurant(post["name"] as String, post["shop_description"] as String,post["profile_pic"] as String,post["email"] as String,key as String))
                         }
                     }
 

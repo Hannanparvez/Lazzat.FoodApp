@@ -2,6 +2,7 @@ package com.project.lazzatproject
 
 import android.content.Context
 import android.graphics.Typeface
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,12 +23,17 @@ class CustomMenuExpandableListAdapter internal constructor(private val context: 
     override fun getChildView(listPosition: Int, expandedListPosition: Int, isLastChild: Boolean, convertView: View?, parent: ViewGroup): View {
         var convertView = convertView
         val expandedListText = getChild(listPosition, expandedListPosition) as String
+        val sp=expandedListText.split("$")
         if (convertView == null) {
             val layoutInflater = this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             convertView = layoutInflater.inflate(R.layout.restaurentproduct, null)
         }
         val expandedListTextView = convertView!!.findViewById<TextView>(R.id.textView18)
-        expandedListTextView.text = expandedListText
+        expandedListTextView.text = sp[0]
+        val expandedListTextView1 = convertView!!.findViewById<TextView>(R.id.textView20)
+        expandedListTextView1.text=sp[1]
+        val expandedListTextView2 = convertView!!.findViewById<TextView>(R.id.textView20)
+
         return convertView
     }
 
