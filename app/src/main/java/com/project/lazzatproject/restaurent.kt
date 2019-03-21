@@ -2,16 +2,14 @@ package com.project.lazzatproject
 
 import android.app.Activity
 import android.content.ContentValues
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.widget.ExpandableListAdapter
 import android.widget.ExpandableListView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_restaurent.*
 
@@ -26,43 +24,53 @@ class restaurent : Activity() {
     val data: HashMap<String, List<String>>
         get() {
             val listData = HashMap<String, List<String>>()
+            var extras = getIntent().getExtras();
+            val menuref = myRef.child("Users").child(extras.getString("UID")).child("menu")
+            menuref.addValueEventListener(object : ValueEventListener {
 
-            val redmiMobiles = ArrayList<String>()
-            redmiMobiles.add("Redmi Y2")
-            redmiMobiles.add("Redmi S2")
-            redmiMobiles.add("Redmi Note 5 Pro")
-            redmiMobiles.add("Redmi Note 5")
-            redmiMobiles.add("Redmi 5 Plus")
-            redmiMobiles.add("Redmi Y1")
-            redmiMobiles.add("Redmi 3S Plus")
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-            val micromaxMobiles = ArrayList<String>()
-            micromaxMobiles.add("Micromax Bharat Go")
-            micromaxMobiles.add("Micromax Bharat 5 Pro")
-            micromaxMobiles.add("Micromax Bharat 5")
-            micromaxMobiles.add("Micromax Canvas 1")
-            micromaxMobiles.add("Micromax Dual 5")
 
-            val appleMobiles = ArrayList<String>()
-            appleMobiles.add("iPhone 8")
-            appleMobiles.add("iPhone 8 Plus")
-            appleMobiles.add("iPhone X")
-            appleMobiles.add("iPhone 7 Plus")
-            appleMobiles.add("iPhone 7")
-            appleMobiles.add("iPhone 6 Plus")
+                    // This method is called once with the initial value and again
+                    // whenever data at this location is updated.
+                    for (snap in dataSnapshot.children) {
+                        val temp = ArrayList<String>()
+                        if (snap.hasChildren()){
+                            Log.d("test",snap.key.toString()+"has children")
+                            for (snaap in snap.children){
+                                temp.add(snaap.key.toString()+"$"+snaap.value.toString())
 
-            val samsungMobiles = ArrayList<String>()
-            samsungMobiles.add("Samsung Galaxy S9+")
-            samsungMobiles.add("Samsung Galaxy Note 7")
-            samsungMobiles.add("Samsung Galaxy Note 5 Dual")
-            samsungMobiles.add("Samsung Galaxy S8")
-            samsungMobiles.add("Samsung Galaxy A8")
-            samsungMobiles.add("Samsung Galaxy Note 4")
+                            }
+                        }
 
-            listData["Redmi"] = redmiMobiles
-            listData["Micromax"] = micromaxMobiles
-            listData["Apple"] = appleMobiles
-            listData["Samsung"] = samsungMobiles
+                        listData[snap.key.toString()]=temp
+                        Log.d("hi",snap.key.toString())
+
+                    }
+                    Log.d("hi",listData.size.toString())
+
+                        titleList = ArrayList(listData.keys)
+                        adapter = CustomMenuExpandableListAdapter(applicationContext, titleList as ArrayList<String>, listData)
+                        expandableListView!!.setAdapter(adapter)
+
+//                        expandableListView!!.setOnGroupExpandListener {
+//                            groupPosition -> Toast.makeText(context, (titleList as ArrayList<String>)[groupPosition] + " List Expanded.", Toast.LENGTH_SHORT).show()
+//                        }
+//
+//                        expandableListView!!.setOnGroupCollapseListener {
+//                            groupPosition -> Toast.makeText(context, (titleList as ArrayList<String>)[groupPosition] + " List Collapsed.", Toast.LENGTH_SHORT).show()
+//                        }
+
+                     // Sign in success, update UI with the signed-in user's information
+
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Failed to read value
+                }
+            })
+
+            Log.d("hiojj",extras.getString("UID"))
 
             return listData
         }
@@ -91,6 +99,10 @@ class restaurent : Activity() {
                             Picasso.get().load(post["profile_pic"] as String ).into(imageView4)
                             textView11.text=post["shop_name"] as String
                             textView12.text=post["shop_description"] as String
+//                            Log.d("hijj",key as String)
+
+//                            menuref = myRef.child("Users").child(key).child("menu")
+
                         }
                     }
 
@@ -109,9 +121,10 @@ class restaurent : Activity() {
         })
             expandableListView = findViewById(R.id.restaurantmenu)
             if (expandableListView != null) {
+
                 val listData = data
                 titleList = ArrayList(listData.keys)
-                adapter = CustomMenuExpandableListAdapter(this, titleList as ArrayList<String>, listData)
+                adapter = CustomMenuExpandableListAdapter(this, titleList as ArrayList<String>, listData!!)
                 expandableListView!!.setAdapter(adapter)
 
                 expandableListView!!.setOnGroupExpandListener { groupPosition -> Toast.makeText(applicationContext, (titleList as ArrayList<String>)[groupPosition] + " List Expanded.", Toast.LENGTH_SHORT).show() }

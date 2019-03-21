@@ -130,6 +130,7 @@ open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, G
 
                         val post = td[key] as HashMap<*, *>
                         if(post["type"] as String == "owner") {
+<<<<<<< HEAD
 
                             val a = post["location"] as HashMap<*,*>
                             val owner_lat = a["latitude"]
@@ -143,6 +144,10 @@ open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, G
 //                            listCont.add(Restaurant(post["name"] as String, post["shop_description"] as String,post["profile_pic"] as String,post["email"] as String))
 
                             hashMap[key.toString()] = dist.toDouble()
+=======
+                            Log.d(ContentValues.TAG, "inside if(): ")
+                            listCont.add(Restaurant(post["name"] as String, post["shop_description"] as String,post["profile_pic"] as String,post["email"] as String,key as String))
+>>>>>>> c69ffea204062a3b48d643c0f6ea76b48471c0d1
                         }
                         hashMap.toSortedMap(compareBy<String>{it.length}.thenBy { it })
                     }
