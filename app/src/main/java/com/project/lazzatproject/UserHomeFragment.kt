@@ -130,7 +130,6 @@ open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, G
 
                         val post = td[key] as HashMap<*, *>
                         if(post["type"] as String == "owner") {
-<<<<<<< HEAD
 
                             val a = post["location"] as HashMap<*,*>
                             val owner_lat = a["latitude"]
@@ -144,18 +143,20 @@ open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, G
 //                            listCont.add(Restaurant(post["name"] as String, post["shop_description"] as String,post["profile_pic"] as String,post["email"] as String))
 
                             hashMap[key.toString()] = dist.toDouble()
-=======
+
                             Log.d(ContentValues.TAG, "inside if(): ")
-                            listCont.add(Restaurant(post["name"] as String, post["shop_description"] as String,post["profile_pic"] as String,post["email"] as String,key as String))
->>>>>>> c69ffea204062a3b48d643c0f6ea76b48471c0d1
+//                            listCont.add(Restaurant(post["name"] as String, post["shop_description"] as String,post["profile_pic"] as String,post["email"] as String,key as String))
+
                         }
-                        hashMap.toSortedMap(compareBy<String>{it.length}.thenBy { it })
+
                     }
-                    for(key in hashMap.keys){
+                    val result = hashMap.toList().sortedBy { (_, value) -> value}.toMap()
+
+                    for(key in result.keys){
                         Log.d(TAG,"****INSIDE FREAKING FOR LOOP****")
                         Log.d(TAG,"$key = ${hashMap[key]}")
                         val post1 = td[key] as HashMap<*, *>
-                        listCont.add(Restaurant(post1["name"] as String, post1["shop_description"] as String,post1["profile_pic"] as String,post1["email"] as String))
+                        listCont.add(Restaurant(post1["name"] as String, post1["shop_description"] as String,post1["profile_pic"] as String,post1["email"] as String, key))
 
                     }
                     Log.d(TAG,"size is ${hashMap.size}")
