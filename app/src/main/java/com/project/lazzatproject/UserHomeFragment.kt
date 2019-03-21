@@ -35,7 +35,7 @@ import java.util.*
 import kotlin.collections.HashMap
 
 
-@Suppress("DEPRECATION")
+@Suppress("DEPRECATION", "CAST_NEVER_SUCCEEDS")
 open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
 
@@ -119,10 +119,11 @@ open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, G
         myRef.child("Users").addValueEventListener(object : ValueEventListener {
 
             override fun onDataChange(p0: DataSnapshot) {
+                val hashMap: HashMap<String,Double> = HashMap()
+                hashMap.clear()
                 try {
                     Log.d(ContentValues.TAG, "inside onDataChange(): ")
                     val td = p0.value as HashMap<*, *>
-                    val hashMap: HashMap<String,Double> = HashMap()
                     for(key in td.keys){
 
                         Log.d(ContentValues.TAG, "inside for loop: ")
@@ -139,14 +140,19 @@ open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, G
 
                             Log.d(TAG,"Owner $owner_name has location ($owner_lat,$owner_lon) with distance $dist ")
 
-                            listCont.add(Restaurant(post["name"] as String, post["shop_description"] as String,post["profile_pic"] as String,post["email"] as String))
+//                            listCont.add(Restaurant(post["name"] as String, post["shop_description"] as String,post["profile_pic"] as String,post["email"] as String))
 
                             hashMap[key.toString()] = dist.toDouble()
                         }
+                        hashMap.toSortedMap(compareBy<String>{it.length}.thenBy { it })
                     }
-                        for(key in hashMap.keys){
-                            Log.d(TAG,"$key = ${hashMap[key]}")
-                        }
+                    for(key in hashMap.keys){
+                        Log.d(TAG,"****INSIDE FREAKING FOR LOOP****")
+                        Log.d(TAG,"$key = ${hashMap[key]}")
+                        val post1 = td[key] as HashMap<*, *>
+                        listCont.add(Restaurant(post1["name"] as String, post1["shop_description"] as String,post1["profile_pic"] as String,post1["email"] as String))
+
+                    }
                     Log.d(TAG,"size is ${hashMap.size}")
                 }catch (ex:Exception){}
 
@@ -276,4 +282,6 @@ open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, G
 
         return ((earthRadius * c)/1000).toFloat()
     }
+
+
 }
