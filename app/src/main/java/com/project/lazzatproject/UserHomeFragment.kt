@@ -26,6 +26,7 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.libraries.places.internal.db
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -64,11 +65,12 @@ open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, G
     private var lat: Double = 0.0
     private var lon: Double = 0.0
 
-            private val isLocationEnabled: Boolean
+    private val isLocationEnabled: Boolean
         get() {
             locationManager = activity!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
             return locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager!!.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
         }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -95,7 +97,7 @@ open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, G
 
         mLocationManager = activity!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
-        Log.d("gggg","uooo")
+        Log.d("gggg", "uooo")
         checkLocation()
         Log.d(ContentValues.TAG, "inside onCreate(): ")
 
@@ -105,10 +107,9 @@ open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, G
         loadPost()
 
 
-
-
     }
-    private fun loadPost(){
+
+    private fun loadPost() {
         val loading = AlertDialog.Builder(activity)
         //View view = getLayoutInflater().inflate(R.layout.progress);
         loading.setView(R.layout.fetchingrestaurents)
@@ -119,26 +120,27 @@ open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, G
         myRef.child("Users").addValueEventListener(object : ValueEventListener {
 
             override fun onDataChange(p0: DataSnapshot) {
-                val hashMap: HashMap<String,Double> = HashMap()
-                hashMap.clear()
+                val hashMap: HashMap<String, Double> = HashMap()
+//                hashMap.clear()
                 try {
                     Log.d(ContentValues.TAG, "inside onDataChange(): ")
                     val td = p0.value as HashMap<*, *>
-                    for(key in td.keys){
+                    for (key in td.keys) {
 
                         Log.d(ContentValues.TAG, "inside for loop: ")
 
                         val post = td[key] as HashMap<*, *>
-                        if(post["type"] as String == "owner") {
+                        if (post["type"] as String == "owner") {
 
-                            val a = post["location"] as HashMap<*,*>
+                            val a = post["location"] as HashMap<*, *>
                             val owner_lat = a["latitude"]
                             val owner_lon = a["longitude"]
                             val owner_name = post["name"]
 
-                            val dist = distance(owner_lat as Double, owner_lon as Double,lat,lon)
 
-                            Log.d(TAG,"Owner $owner_name has location ($owner_lat,$owner_lon) with distance $dist ")
+                            val dist = distance(owner_lat as Double, owner_lon as Double, lat, lon)
+
+                            Log.d(TAG, "Owner $owner_name has location ($owner_lat,$owner_lon) with distance $dist ")
 
 //                            listCont.add(Restaurant(post["name"] as String, post["shop_description"] as String,post["profile_pic"] as String,post["email"] as String))
 
@@ -150,21 +152,22 @@ open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, G
                         }
 
                     }
-                    val result = hashMap.toList().sortedBy { (_, value) -> value}.toMap()
+                    val result = hashMap.toList().sortedBy { (_, value) -> value }.toMap()
 
-                    for(key in result.keys){
-                        Log.d(TAG,"****INSIDE FREAKING FOR LOOP****")
-                        Log.d(TAG,"$key = ${hashMap[key]}")
+                    for (key in result.keys) {
+                        Log.d(TAG, "****INSIDE FREAKING FOR LOOP****")
+                        Log.d(TAG, "$key = ${hashMap[key]}")
                         val post1 = td[key] as HashMap<*, *>
-                        listCont.add(Restaurant(post1["name"] as String, post1["shop_description"] as String,post1["profile_pic"] as String,post1["email"] as String, key))
+                        listCont.add(Restaurant(post1["name"] as String, post1["shop_description"] as String, post1["profile_pic"] as String, post1["email"] as String, key))
 
                     }
-                    Log.d(TAG,"size is ${hashMap.size}")
-                }catch (ex:Exception){}
+                    Log.d(TAG, "size is ${hashMap.size}")
+                } catch (ex: Exception) {
+                }
 
-                if (isVisible){
+                if (isVisible) {
 
-                    val viewAdapter = RecycleViewAdapter(context!!,listCont)
+                    val viewAdapter = RecycleViewAdapter(context!!, listCont)
                     recyclerView.adapter = viewAdapter
                     loadingdialog.dismiss()
                 }
@@ -201,11 +204,13 @@ open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, G
             //mLongitudeTextView.setText(String.valueOf(mLocation.getLongitude()));
         } else {
             Toast.makeText(context, "Location not Detected", Toast.LENGTH_SHORT).show()
-        }    }
+        }
+    }
 
     override fun onConnectionSuspended(p0: Int) {
         Log.i(TAG, "Connection Suspended")
-        mGoogleApiClient!!.connect()    }
+        mGoogleApiClient!!.connect()
+    }
 
     override fun onConnectionFailed(p0: ConnectionResult) {
         Log.i(TAG, "Connection failed. Error: " + p0.errorCode)
@@ -217,8 +222,8 @@ open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, G
         val msg = "Updated Location: " +
                 java.lang.Double.toString(lat) + "," +
                 java.lang.Double.toString(lon)
-
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+        Log.d(TAG, msg)
+//        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
         // You can now create a LatLng Object for use with maps
     }
 
@@ -256,6 +261,7 @@ open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, G
     }
 
 
+
     private fun startLocationUpdates() {
         // Create the location request
         mLocationRequest = LocationRequest.create()
@@ -286,7 +292,7 @@ open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, G
                 Math.sin(dLng / 2) * Math.sin(dLng / 2)
         val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
 
-        return ((earthRadius * c)/1000).toFloat()
+        return ((earthRadius * c) / 1000).toFloat()
     }
 
 
