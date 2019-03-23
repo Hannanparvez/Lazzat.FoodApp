@@ -365,7 +365,10 @@ class ProfileFragment : Fragment() {
                     e_shop_name=shop_name
                     shop_name.setText(dataSnapshot.child("shop_name").value as String)
                     shop_description.setText(dataSnapshot.child("shop_description").value as String)
-                    shop_address.text=dataSnapshot.child("location").child("address").value as String
+                    if(dataSnapshot.child("location").hasChildren()){
+
+                        shop_address.text=dataSnapshot.child("location").child("address").value as String
+                    }
                     loadingprogress!!.dismiss()
                 }
 

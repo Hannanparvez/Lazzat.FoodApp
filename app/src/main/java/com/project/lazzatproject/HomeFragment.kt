@@ -18,7 +18,6 @@ import android.widget.AdapterView.OnItemSelectedListener
 import androidx.fragment.app.Fragment
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -55,8 +54,8 @@ GoogleApiClient.OnConnectionFailedListener{
 
         val currentuser = mAuth!!.currentUser
 
-        val addcategorys = view.findViewById(R.id.addCategory) as FloatingActionButton
-        addcategorys.setOnClickListener {
+        val addcategorythumbnail=view.findViewById(R.id.thumbnail) as ImageView
+        addcategorythumbnail.setOnClickListener {
             val alert = AlertDialog.Builder(context)
             var category_name: EditText? = null
             with(alert) {
@@ -89,8 +88,9 @@ GoogleApiClient.OnConnectionFailedListener{
             dialog.setView(category_name)
             dialog.show()
         }
-        val addproducts = view.findViewById(R.id.addMenu) as FloatingActionButton
-        addproducts.setOnClickListener {
+//        val addproducts = view.findViewById(R.id.addMenuPro) as FloatingActionButton
+        val addproductsthumbnail=view.findViewById(R.id.thumbnail2) as ImageView
+        addproductsthumbnail.setOnClickListener {
 
 
             var productcategory=""
@@ -265,6 +265,7 @@ GoogleApiClient.OnConnectionFailedListener{
 
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val currentuser = mAuth!!.currentUser
         if (resultCode == Activity.RESULT_OK && data != null) {
             Log.d("RESULT****", "OK")
             if (requestCode == 1) {
@@ -289,12 +290,13 @@ GoogleApiClient.OnConnectionFailedListener{
             } else if (requestCode == 123) {
                 val latitude = data.getDoubleExtra(LATITUDE, 0.0)
                 Log.d("LATITUDE****", latitude.toString())
+                myRef.child("Users").child(currentuser!!.uid).child("location").child("latitude").setValue(latitude)
                 val longitude = data.getDoubleExtra(LONGITUDE, 0.0)
                 Log.d("LONGITUDE****", longitude.toString())
+                myRef.child("Users").child(currentuser.uid).child("location").child("longitude").setValue(longitude)
                 val address = data.getStringExtra(LOCATION_ADDRESS)
                 Log.d("ADDRESS****", address.toString())
-//                val lekuPoi = data.getParcelableExtra<LekuPoi>(LEKU_POI)
-//                Log.d("LekuPoi****", lekuPoi.toString())
+                myRef.child("Users").child(currentuser.uid).child("location").child("address").setValue(address)
             }
         }
         if (resultCode == Activity.RESULT_CANCELED) {
