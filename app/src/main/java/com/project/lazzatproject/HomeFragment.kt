@@ -55,7 +55,7 @@ GoogleApiClient.OnConnectionFailedListener{
 
         val currentuser = mAuth!!.currentUser
 
-        val addcategorys = view.findViewById(R.id.addCategory) as FloatingActionButton
+        val addcategorys = view.findViewById(R.id.addCategory) as ImageView
         addcategorys.setOnClickListener {
             val alert = AlertDialog.Builder(context)
             var category_name: EditText? = null
@@ -89,7 +89,7 @@ GoogleApiClient.OnConnectionFailedListener{
             dialog.setView(category_name)
             dialog.show()
         }
-        val addproducts = view.findViewById(R.id.addMenu) as FloatingActionButton
+        val addproducts = view.findViewById(R.id.addMenu) as ImageView
         addproducts.setOnClickListener {
 
 
