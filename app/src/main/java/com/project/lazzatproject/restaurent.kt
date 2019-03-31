@@ -97,8 +97,10 @@ class restaurent : Activity() {
                         val post = td[key] as java.util.HashMap<*, *>
                         if(post["email"] as String == extras.getString("STRING_I_NEED")) {
                             Picasso.get().load(post["profile_pic"] as String ).into(imageView4)
-                            textView11.text=post["shop_name"] as String
-                            textView12.text=post["shop_description"] as String
+                            val x=post["shop_name"] as String
+                            val y=post["shop_description"] as String
+                            textView11.text=x.capitalize()
+                            textView12.text=y.capitalize()
 //                            Log.d("hijj",key as String)
 
 //                            menuref = myRef.child("Users").child(key).child("menu")
@@ -120,6 +122,7 @@ class restaurent : Activity() {
             }
         })
             expandableListView = findViewById(R.id.restaurantmenu)
+
             if (expandableListView != null) {
 
                 val listData = data
@@ -127,12 +130,12 @@ class restaurent : Activity() {
                 adapter = CustomMenuExpandableListAdapter(this, titleList as ArrayList<String>, listData!!)
                 expandableListView!!.setAdapter(adapter)
 
-                expandableListView!!.setOnGroupExpandListener { groupPosition -> Toast.makeText(applicationContext, (titleList as ArrayList<String>)[groupPosition] + " List Expanded.", Toast.LENGTH_SHORT).show() }
+//                expandableListView!!.setOnGroupExpandListener { groupPosition -> Toast.makeText(applicationContext, (titleList as ArrayList<String>)[groupPosition] + " List Expanded.", Toast.LENGTH_SHORT).show() }
 
-                expandableListView!!.setOnGroupCollapseListener { groupPosition -> Toast.makeText(applicationContext, (titleList as ArrayList<String>)[groupPosition] + " List Collapsed.", Toast.LENGTH_SHORT).show() }
+//                expandableListView!!.setOnGroupCollapseListener { groupPosition -> Toast.makeText(applicationContext, (titleList as ArrayList<String>)[groupPosition] + " List Collapsed.", Toast.LENGTH_SHORT).show() }
 
                 expandableListView!!.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
-                    Toast.makeText(applicationContext, "Clicked: " + (titleList as ArrayList<String>)[groupPosition] + " -> " + listData[(titleList as ArrayList<String>)[groupPosition]]!!.get(childPosition), Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(applicationContext, "Clicked: " + (titleList as ArrayList<String>)[groupPosition] + " -> " + listData[(titleList as ArrayList<String>)[groupPosition]]!!.get(childPosition), Toast.LENGTH_SHORT).show()
                     false
                 }
             }

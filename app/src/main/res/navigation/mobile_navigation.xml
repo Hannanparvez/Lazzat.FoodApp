@@ -14,21 +14,21 @@
     <fragment
         android:id="@+id/destination_home"
         android:name="com.project.lazzatproject.UserHomeFragment"
-        android:label="fragment_home"
+        android:label="Home"
         tools:layout="@layout/fragment_user_home" />
     <fragment
         android:id="@+id/destination_explore"
         android:name="com.project.lazzatproject.Explore"
-        android:label="fragment_explore"
+        android:label="Explore"
         tools:layout="@layout/fragment_explore" />
     <fragment
         android:id="@+id/destination_profile"
         android:name="com.project.lazzatproject.UserProfileFragment"
-        android:label="ProfileFragment"
+        android:label="Profile"
         tools:layout="@layout/fragment_user_profile"/>
     <fragment
         android:id="@+id/destination_cart"
         android:name="com.project.lazzatproject.CartFragment"
-        android:label="CartFragment"
+        android:label="Cart"
         tools:layout="@layout/fragment_cart"/>
 </navigation>

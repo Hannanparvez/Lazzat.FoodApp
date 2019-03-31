@@ -32,6 +32,7 @@ class UserHomeFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_user_home, container, false)
+
         recyclerView = v.findViewById<View>(R.id.recycler_view) as RecyclerView
         val viewAdapter = RecycleViewAdapter(this.context!!, listCont)
         recyclerView.layoutManager = LinearLayoutManager(this.activity)

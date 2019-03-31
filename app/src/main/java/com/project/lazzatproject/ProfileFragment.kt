@@ -28,6 +28,7 @@ import com.schibstedspain.leku.LOCATION_ADDRESS
 import com.schibstedspain.leku.LONGITUDE
 import com.schibstedspain.leku.LocationPickerActivity
 import com.squareup.picasso.Picasso
+import de.hdodenhof.circleimageview.CircleImageView
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.util.*
@@ -59,8 +60,9 @@ class ProfileFragment : Fragment() {
         update()
 
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
+        activity!!.title = "Profile"
         vie = view
-        val ownerdp = view.findViewById(R.id.owner_profile_pic) as ImageView
+        val ownerdp = view.findViewById(R.id.owner_profile_pic) as CircleImageView
         val editshopname=view.findViewById(R.id.editshopname) as ImageButton
         val editshopdescription=view.findViewById(R.id.editshopdescription) as ImageButton
         val editshopaddress=view.findViewById(R.id.editshopaddress) as ImageButton
@@ -349,11 +351,11 @@ class ProfileFragment : Fragment() {
 
                     if (dp == "none") {
 
-                        vie!!.findViewById<ImageView>(R.id.owner_profile_pic).setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_camera));
+                        vie!!.findViewById<CircleImageView>(R.id.owner_profile_pic).setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_camera));
 //                        Picasso.get().load(R.drawable.backprofile).into(vie!!.findViewById<ImageView>(R.id.owner_profile_pic));
                     } else {
                         Picasso.get().load(dp).config(Bitmap.Config.RGB_565)
-                                .fit().centerCrop().into(vie!!.findViewById<ImageView>(R.id.owner_profile_pic));
+                                .fit().centerCrop().into(vie!!.findViewById<CircleImageView>(R.id.owner_profile_pic));
                     }
                     Log.d("pic", dp)
                     var usernametext = vie!!.findViewById<TextView>(R.id.owner_profile_name1)

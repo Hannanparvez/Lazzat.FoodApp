@@ -44,12 +44,12 @@ class DashboardFragment : Fragment() {
                         if (snap.hasChildren()){
                             Log.d("test",snap.key.toString()+"has children")
                             for (snaap in snap.children){
-                                temp.add(snaap.key.toString()+"$"+snaap.value.toString())
+                                temp.add(snaap.key.toString().capitalize()+"$"+snaap.value.toString())
 
                             }
                         }
 
-                        listData[snap.key.toString()]=temp
+                        listData[snap.key.toString().capitalize()]=temp
                         Log.d("hi",snap.key.toString())
 
                     }
@@ -91,6 +91,7 @@ class DashboardFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreate(savedInstanceState)
         val view = inflater.inflate(R.layout.fragment_dashboard, container, false)
+        activity!!.title = "Menu"
         val currentuser=mAuth!!.currentUser
 
         val menuref = myRef.child("Users").child(currentuser!!.uid).child("menu")
@@ -133,7 +134,7 @@ class DashboardFragment : Fragment() {
                     dialog.dismiss()
                 }
                 removeitem.setOnClickListener{
-                    menuref.child((titleList as ArrayList<String>)[groupPosition]).child(sp[0])
+                    menuref.child((titleList as ArrayList<String>)[groupPosition].decapitalize()).child(sp[0].decapitalize())
                             .removeValue()
                     dialog.dismiss()
                     var ft: FragmentTransaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
@@ -142,7 +143,7 @@ class DashboardFragment : Fragment() {
 //                                Toast.makeText(context,MenuItemList[position].name+" has been removed",Toast.LENGTH_SHORT).show()
                 }
                 edititem.setOnClickListener {
-                    menuref.child((titleList as ArrayList<String>)[groupPosition]).child(sp[0])
+                    menuref.child((titleList as ArrayList<String>)[groupPosition].decapitalize()).child(sp[0].decapitalize())
                             .setValue(productprice.text.toString())
 
                     Toast.makeText(context,"Your product has been added",Toast.LENGTH_SHORT).show()

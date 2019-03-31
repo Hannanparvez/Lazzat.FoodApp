@@ -5,8 +5,11 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
+import android.graphics.Bitmap
 import android.location.Address
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,6 +18,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
@@ -25,6 +29,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.schibstedspain.leku.*
+import java.io.ByteArrayOutputStream
+import java.io.IOException
 
 
 class HomeFragment : Fragment(),GoogleApiClient.ConnectionCallbacks,
@@ -40,7 +46,8 @@ GoogleApiClient.OnConnectionFailedListener{
     override fun onConnected(p0: Bundle?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
+    private var chooseofferpicdialog: Dialog? = null
+    private var filePath: Uri? = null
     private var database = FirebaseDatabase.getInstance()
     private var myRef = database.reference
     private var mAuth: FirebaseAuth? = null
@@ -52,10 +59,14 @@ GoogleApiClient.OnConnectionFailedListener{
 
         mAuth = FirebaseAuth.getInstance()
         val view = inflater.inflate(R.layout.fragment_home, container, false)
+        activity!!.title = "Home"
+
+
 
         val currentuser = mAuth!!.currentUser
 
-        val addcategorys = view.findViewById(R.id.addCategory) as ImageView
+        val addcategorys = view.findViewById(R.id.cardaddcat) as CardView
+
         addcategorys.setOnClickListener {
             val alert = AlertDialog.Builder(context)
             var category_name: EditText? = null
@@ -89,7 +100,7 @@ GoogleApiClient.OnConnectionFailedListener{
             dialog.setView(category_name)
             dialog.show()
         }
-        val addproducts = view.findViewById(R.id.addMenu) as ImageView
+        val addproducts = view.findViewById(R.id.cardaddpro) as CardView
         addproducts.setOnClickListener {
 
 
@@ -108,7 +119,7 @@ GoogleApiClient.OnConnectionFailedListener{
             val addproduct = dialog.findViewById(R.id.addproduct) as Button
             val canceladd = dialog.findViewById(R.id.canceladd) as Button
 
-            var listofcategories = arrayListOf<String>("none")
+            var listofcategories = arrayListOf<String>("--Select a Category--")
             val menuref = myRef.child("Users").child(currentuser!!.uid).child("menu")
             menuref.addValueEventListener(object : ValueEventListener {
 
@@ -196,6 +207,30 @@ GoogleApiClient.OnConnectionFailedListener{
         }
 
 
+        val addoffers =view.findViewById(R.id.cardoffers) as CardView
+        addoffers.setOnClickListener{
+            val dialog = Dialog(context)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setContentView(R.layout.addoffers)
+            dialog.setCancelable(true)
+            chooseofferpicdialog=dialog
+            dialog.show()
+            val cancel=dialog.findViewById(R.id.button3) as Button
+            cancel.setOnClickListener {
+                dialog.dismiss()
+            }
+            val initiate=dialog.findViewById(R.id.button4) as Button
+            initiate.setOnClickListener {
+
+            }
+            val choosepic=dialog.findViewById(R.id.button2) as Button
+            choosepic.setOnClickListener {
+                chooseImage()
+            }
+
+        }
+
+
 //        //OnClickListener
 //        val pick = viq.findViewById(R.id.btPlacePicker) as Button
 
@@ -204,6 +239,13 @@ GoogleApiClient.OnConnectionFailedListener{
 
 
     }
+    private fun chooseImage() {
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 12)
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -265,6 +307,24 @@ GoogleApiClient.OnConnectionFailedListener{
 
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == 12 && resultCode == Activity.RESULT_OK
+                && data != null && data.data != null) {
+            filePath = data.data
+            try {
+
+                val bitmap = MediaStore.Images.Media.getBitmap(context!!.contentResolver, filePath)
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 50, ByteArrayOutputStream())
+                Log.d("pic", filePath.toString())
+                val image = chooseofferpicdialog!!.findViewById(R.id.imageView) as ImageView
+
+                image!!.setImageBitmap(bitmap)
+                image.visibility=View.VISIBLE
+
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
+        }
         if (resultCode == Activity.RESULT_OK && data != null) {
             Log.d("RESULT****", "OK")
             if (requestCode == 1) {

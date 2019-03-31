@@ -13,8 +13,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.google.android.libraries.places.internal.v
-
-
+import de.hdodenhof.circleimageview.CircleImageView
 
 
 class RecycleViewAdapter(private var context: Context, private var restaurantList: List<Restaurant>) : RecyclerView.Adapter<RecycleViewAdapter.MyViewHolder>() {
@@ -28,8 +27,8 @@ class RecycleViewAdapter(private var context: Context, private var restaurantLis
 
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.name.text = restaurantList[position].name
-        holder.spec.text = restaurantList[position].spec
+        holder.name.text = restaurantList[position].name!!.capitalize()
+        holder.spec.text = restaurantList[position].spec!!.capitalize()
 //        holder.imageView.setImageResource(restaurantList[position].photo)
         holder.imageView.clipToOutline = true
         Log.d("han",restaurantList[position].photo)
@@ -46,7 +45,7 @@ class RecycleViewAdapter(private var context: Context, private var restaurantLis
             intento.putExtra("UID",restaurantList[position].uid)
 
             context.startActivity(intento)
-            Toast.makeText(context,restaurantList[position].name, Toast.LENGTH_SHORT).show()
+//            Toast.makeText(context,restaurantList[position].name, Toast.LENGTH_SHORT).show()
         })
 
 
@@ -60,7 +59,7 @@ class RecycleViewAdapter(private var context: Context, private var restaurantLis
 
         internal var name: TextView = itemView.findViewById<View>(R.id.restaurantname) as TextView
         internal var spec: TextView = itemView.findViewById<View>(R.id.speciality) as TextView
-        internal var imageView: ImageView = itemView.findViewById<View>(R.id.imageView2) as ImageView
+        internal var imageView: CircleImageView= itemView.findViewById<View>(R.id.imageView2) as CircleImageView
 
 
     }

@@ -95,7 +95,7 @@ class Owner_dashboard : AppCompatActivity(), BottomNavigationView.OnNavigationIt
         var fragment: Fragment? = null
 
         when (item.itemId) {
-            navigation_home -> fragment = HomeFragment()
+            navigation_home ->  fragment = HomeFragment()
 
             navigation_dashboard -> fragment = DashboardFragment()
 

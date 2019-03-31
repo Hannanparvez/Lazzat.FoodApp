@@ -26,6 +26,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_profile.*
 import java.io.ByteArrayOutputStream
 import java.io.IOException
@@ -58,7 +59,7 @@ class UserProfileFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_user_profile, container, false)
         vie = view
-        val userdp = view.findViewById(R.id.user_profile_photo) as ImageView
+        val userdp = view.findViewById(R.id.user_profile_photo) as CircleImageView
 
 
         userdp.setOnClickListener {
@@ -217,14 +218,14 @@ class UserProfileFragment : Fragment() {
                     Log.d("pic",dp)
 
                     if (dp == "none") {
-                        vie!!.findViewById<ImageView>(R.id.user_profile_photo).setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_camera));
+                        vie!!.findViewById<CircleImageView>(R.id.user_profile_photo).setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_camera));
                     } else {
                         Picasso.get().load(dp).config(Bitmap.Config.RGB_565)
-                                .fit().centerCrop().into(vie!!.findViewById<ImageView>(R.id.user_profile_photo));
+                                .fit().centerCrop().into(vie!!.findViewById<CircleImageView>(R.id.user_profile_photo));
                     }
                     Log.d("pic", dp)
                     var usernametext = vie!!.findViewById<TextView>(R.id.user_profile_name)
-                    usernametext.text = username
+                    usernametext.text = username.capitalize()
 
 
                     loadingprogress!!.dismiss()

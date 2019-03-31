@@ -29,10 +29,10 @@ class CustomMenuExpandableListAdapter internal constructor(private val context: 
             convertView = layoutInflater.inflate(R.layout.restaurentproduct, null)
         }
         val expandedListTextView = convertView!!.findViewById<TextView>(R.id.textView18)
-        expandedListTextView.text = sp[0]
+        expandedListTextView.text = sp[0].capitalize()
         val expandedListTextView1 = convertView!!.findViewById<TextView>(R.id.textView20)
         expandedListTextView1.text=sp[1]
-        val expandedListTextView2 = convertView!!.findViewById<TextView>(R.id.textView20)
+//        val expandedListTextView2 = convertView!!.findViewById<TextView>(R.id.textView20)
 
         return convertView
     }
@@ -55,7 +55,8 @@ class CustomMenuExpandableListAdapter internal constructor(private val context: 
 
     override fun getGroupView(listPosition: Int, isExpanded: Boolean, convertView: View?, parent: ViewGroup): View {
         var convertView = convertView
-        val listTitle = getGroup(listPosition) as String
+        val x=getGroup(listPosition) as String
+        val listTitle = x.capitalize()
         if (convertView == null) {
             val layoutInflater = this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             convertView = layoutInflater.inflate(R.layout.list_row_group, null)
