@@ -26,7 +26,6 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
-import com.google.android.libraries.places.internal.db
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -121,7 +120,7 @@ open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, G
 
             override fun onDataChange(p0: DataSnapshot) {
                 val hashMap: HashMap<String, Double> = HashMap()
-//                hashMap.clear()
+                hashMap.clear()
                 try {
                     Log.d(ContentValues.TAG, "inside onDataChange(): ")
                     val td = p0.value as HashMap<*, *>
@@ -130,25 +129,25 @@ open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, G
                         Log.d(ContentValues.TAG, "inside for loop: ")
 
                         val post = td[key] as HashMap<*, *>
-                        if (post["type"] as String == "owner") {
 
-                            val a = post["location"] as HashMap<*, *>
+                        if (post["type"] as String == "owner") {
+                            Log.d(ContentValues.TAG, "inside if: ")
+
+                           val a = post["location"] as Map<*, *>
+                            if (post["location"] == "none")
+                                continue
+
                             val owner_lat = a["latitude"]
                             val owner_lon = a["longitude"]
                             val owner_name = post["name"]
-
+                            Log.d(TAG, "val dist")
 
                             val dist = distance(owner_lat as Double, owner_lon as Double, lat, lon)
 
                             Log.d(TAG, "Owner $owner_name has location ($owner_lat,$owner_lon) with distance $dist ")
 
-//                            listCont.add(Restaurant(post["name"] as String, post["shop_description"] as String,post["profile_pic"] as String,post["email"] as String))
-
+//                            listCont.add(Restaurant(post["name"] as String, post["shop_description"] as String,post["profile_pic"] as String,post["email"] as String, key as String))
                             hashMap[key.toString()] = dist.toDouble()
-
-                            Log.d(ContentValues.TAG, "inside if(): ")
-//                            listCont.add(Restaurant(post["name"] as String, post["shop_description"] as String,post["profile_pic"] as String,post["email"] as String,key as String))
-
                         }
 
                     }
@@ -200,8 +199,6 @@ open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, G
         }
         if (mLocation != null) {
 
-            // mLatitudeTextView.setText(String.valueOf(mLocation.getLatitude()));
-            //mLongitudeTextView.setText(String.valueOf(mLocation.getLongitude()));
         } else {
             Toast.makeText(context, "Location not Detected", Toast.LENGTH_SHORT).show()
         }
@@ -222,8 +219,7 @@ open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, G
         val msg = "Updated Location: " +
                 java.lang.Double.toString(lat) + "," +
                 java.lang.Double.toString(lon)
-        Log.d(TAG, msg)
-//        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
         // You can now create a LatLng Object for use with maps
     }
 
@@ -285,12 +281,18 @@ open class UserHomeFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, G
     }
 
     fun distance(lat1: Double, lng1: Double, lat2: Double, lng2: Double): Float {
+        Log.d(TAG, "distance func")
         val earthRadius = 6371000.0 //meters
         val dLat = Math.toRadians((lat2 - lat1))
         val dLng = Math.toRadians((lng2 - lng1))
+        Log.d(TAG, "distance func1")
+
         val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
                 Math.sin(dLng / 2) * Math.sin(dLng / 2)
+        Log.d(TAG, "distance func2")
+
         val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+        Log.d(TAG, "distance func3")
 
         return ((earthRadius * c) / 1000).toFloat()
     }
