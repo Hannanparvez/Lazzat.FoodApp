@@ -2,16 +2,21 @@ package com.project.lazzatproject
 
 import android.app.Activity
 import android.content.ContentValues
-import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.ExpandableListAdapter
 import android.widget.ExpandableListView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_restaurent.*
+
 
 class restaurent : Activity() {
     private var database = FirebaseDatabase.getInstance()
@@ -99,8 +104,21 @@ class restaurent : Activity() {
                             Picasso.get().load(post["profile_pic"] as String ).into(imageView4)
                             val x=post["shop_name"] as String
                             val y=post["shop_description"] as String
+                            val z=post["location"] as java.util.HashMap<*, *>
+                            val k=z["address"] as String
+
                             textView11.text=x.capitalize()
                             textView12.text=y.capitalize()
+                            button5.setOnClickListener {
+//                                Toast.makeText(applicationContext, "Clicked: " , Toast.LENGTH_SHORT).show()
+                                val intent = Intent(android.content.Intent.ACTION_VIEW,
+                                        Uri.parse("http://maps.google.com/maps?saddr=34.154492999999995,74.64786269999999&daddr="+z["latitude"].toString()+","+z["longitude"].toString()))
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                intent.addCategory(Intent.CATEGORY_LAUNCHER)
+                                intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity")
+                                startActivity(intent)
+
+                            }
 //                            Log.d("hijj",key as String)
 
 //                            menuref = myRef.child("Users").child(key).child("menu")
