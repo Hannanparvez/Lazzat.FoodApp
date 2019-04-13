@@ -25,15 +25,23 @@ class UserHomeFragment : Fragment() {
     private var myRef = database.reference
 
     private lateinit var v: View
+    private lateinit var offerview: RecyclerView
     private lateinit var recyclerView: RecyclerView
     private lateinit var listCont: MutableList<Restaurant>
+    private lateinit var listOffer: MutableList<Offer>
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_user_home, container, false)
 
-        recyclerView = v.findViewById<View>(R.id.recycler_view) as RecyclerView
+        offerview=v.findViewById(R.id.offers_recycler_view) as RecyclerView
+        val offerviewAdapter = OfferRecycleViewAdapter(this.context!!, listOffer)
+        offerview.layoutManager = LinearLayoutManager(this.activity, LinearLayoutManager.HORIZONTAL,false)
+        offerview.adapter = offerviewAdapter
+
+        recyclerView = v.findViewById(R.id.recycler_view) as RecyclerView
         val viewAdapter = RecycleViewAdapter(this.context!!, listCont)
         recyclerView.layoutManager = LinearLayoutManager(this.activity)
         recyclerView.adapter = viewAdapter
@@ -47,6 +55,7 @@ class UserHomeFragment : Fragment() {
         Log.d(ContentValues.TAG, "inside onCreate(): ")
 
         listCont = ArrayList()
+        listOffer=ArrayList()
         Log.d(ContentValues.TAG, "above myPlace: ")
 
         loadPost()
@@ -61,6 +70,9 @@ class UserHomeFragment : Fragment() {
         loading.setView(R.layout.fetchingrestaurents)
         val loadingdialog = loading.create()
         loadingdialog.show()
+        listOffer.add(Offer("hi"))
+        listOffer.add(Offer("hey"))
+        listOffer.add(Offer("what up?"))
 
 
         myRef.child("Users").addValueEventListener(object : ValueEventListener {
